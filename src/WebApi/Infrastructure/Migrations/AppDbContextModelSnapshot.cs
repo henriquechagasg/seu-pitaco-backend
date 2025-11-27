@@ -8,7 +8,7 @@ using WebApi.Infrastructure;
 
 #nullable disable
 
-namespace WebApi.Migrations
+namespace WebApi.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace WebApi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WebApi.Entities.Company", b =>
+            modelBuilder.Entity("WebApi.Domain.Entities.Company", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

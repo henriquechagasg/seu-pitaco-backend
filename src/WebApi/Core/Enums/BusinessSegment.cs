@@ -1,4 +1,4 @@
-namespace WebApi.Enums;
+namespace WebApi.Core.Enums;
 
 public enum BusinessSegment
 {

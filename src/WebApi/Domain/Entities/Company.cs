@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using WebApi.Enums;
+using WebApi.Core.Enums;
 
-namespace WebApi.Entities
+namespace WebApi.Domain.Entities
 {
     public class Company
     {
