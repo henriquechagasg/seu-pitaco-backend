@@ -7,21 +7,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "src\WebApi\WebApi.csproj", "{B32E953F-6360-471A-832F-5CA3B8B9D080}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C88DD14-F956-CE84-757C-A364CCF449FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiTest", "test\WebApiTest\WebApiTest.csproj", "{1F15308B-06F6-4464-B086-943C41F65164}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B32E953F-6360-471A-832F-5CA3B8B9D080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B32E953F-6360-471A-832F-5CA3B8B9D080}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B32E953F-6360-471A-832F-5CA3B8B9D080}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B32E953F-6360-471A-832F-5CA3B8B9D080}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F15308B-06F6-4464-B086-943C41F65164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F15308B-06F6-4464-B086-943C41F65164}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F15308B-06F6-4464-B086-943C41F65164}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F15308B-06F6-4464-B086-943C41F65164}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B32E953F-6360-471A-832F-5CA3B8B9D080} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{1F15308B-06F6-4464-B086-943C41F65164} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 	EndGlobalSection
 EndGlobal
