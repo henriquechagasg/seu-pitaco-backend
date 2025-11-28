@@ -20,6 +20,10 @@ public class Result<TValue>
         _error = error;
     }
 
+    public bool IsSuccess => _isSuccess;
+
+    public bool IsFailure => !_isSuccess;
+
     public static Result<TValue> Success(TValue value) => new(value);
 
     public static Result<TValue> Failure(Error error) => new(error);
@@ -32,4 +36,8 @@ public class Result<TValue>
     {
         return _isSuccess ? success(_value!) : failure(_error);
     }
+
+    public TValue GetValue() => Match(_ => _, e => throw new Exception("Expected success result"));
+
+    public Error GetError() => Match(_ => throw new Exception("Expected error result"), e => e);
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace WebApi.Domain.Abstractions;
 
 public abstract class ValueObject : IEquatable<ValueObject>
