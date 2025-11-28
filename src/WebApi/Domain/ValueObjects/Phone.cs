@@ -1,6 +1,6 @@
-using System.Text.RegularExpressions;
 using WebApi.Domain.Abstractions;
 using WebApi.Domain.Errors;
+using static WebApi.Core.Constants.Expressions;
 
 namespace WebApi.Domain.ValueObjects;
 
@@ -61,7 +61,7 @@ public partial class Phone : ValueObject
             return PhoneError.TooLong;
         }
 
-        if (!PhoneNumber().IsMatch(phone))
+        if (!PhoneRegex().IsMatch(phone))
         {
             return PhoneError.Invalid;
         }
@@ -73,10 +73,4 @@ public partial class Phone : ValueObject
     {
         yield return Value;
     }
-
-    [GeneratedRegex("\\D")]
-    private static partial Regex OnlyDigits();
-
-    [GeneratedRegex("^(?:55)?[1-9][0-9](?:9\\d{8}|\\d{8})$")]
-    private static partial Regex PhoneNumber();
 }
