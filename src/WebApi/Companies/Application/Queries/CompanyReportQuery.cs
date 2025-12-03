@@ -1,11 +1,11 @@
 using Amazon.DynamoDBv2.DataModel;
-using WebApi.Domain.Entities;
+using WebApi.Surveys.Domain.Entities;
 
-namespace WebApi.Application.Services;
+namespace WebApi.Companies.Application.Queries;
 
-public class GetReportService(IDynamoDBContext _context)
+public class CompanyReportQuery(IDynamoDBContext _context)
 {
-    public async Task<List<Survey>> Execute()
+    public async Task<List<Survey>> Handle()
     {
         var surveys = await ScanSurveysAsync();
         return surveys;

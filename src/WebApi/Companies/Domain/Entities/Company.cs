@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using WebApi.Core.Enums;
+using WebApi.Shared.Core.Enums;
 
-namespace WebApi.Domain.Entities
+namespace WebApi.Surveys.Domain.Entities
 {
     public class Company
     {

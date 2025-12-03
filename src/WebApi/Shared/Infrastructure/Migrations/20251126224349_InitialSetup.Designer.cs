@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using WebApi.Infrastructure;
+using WebApi.Shared.Infrastructure;
 
 #nullable disable
 
-namespace WebApi.Infrastructure.Migrations
+namespace WebApi.Shared.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20251126224349_InitialSetup")]
@@ -25,7 +25,7 @@ namespace WebApi.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WebApi.Domain.Entities.Company", b =>
+            modelBuilder.Entity("WebApi.Surveys.Domain.Entities.Company", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

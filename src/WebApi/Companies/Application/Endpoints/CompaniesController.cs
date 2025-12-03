@@ -1,6 +1,6 @@
-using WebApi.Application.Services;
+using WebApi.Companies.Application.Queries;
 
-namespace WebApi.Application.Endpoints
+namespace WebApi.Companies.Application.Endpoints
 {
     public static class CompaniesEndpoints
     {
@@ -10,9 +10,9 @@ namespace WebApi.Application.Endpoints
             group.MapGet("/report", GetCompanyReport).WithName("GetCompanyReport").WithOpenApi();
         }
 
-        public static async Task<IResult> GetCompanyReport(GetReportService getReportService)
+        public static async Task<IResult> GetCompanyReport(CompanyReportQuery CompanyReportQuery)
         {
-            var item = await getReportService.Execute();
+            var item = await CompanyReportQuery.Handle();
             return Results.Ok(item);
         }
     }

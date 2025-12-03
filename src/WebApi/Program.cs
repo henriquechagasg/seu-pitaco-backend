@@ -1,9 +1,9 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Application.Endpoints;
-using WebApi.Application.Services;
-using WebApi.Infrastructure;
+using WebApi.Companies.Application.Endpoints;
+using WebApi.Companies.Application.Queries;
+using WebApi.Shared.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonDynamoDB>();
 builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
 
-builder.Services.AddScoped<GetReportService>();
+builder.Services.AddScoped<CompanyReportQuery>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-namespace WebApi.Domain.Abstractions;
+namespace WebApi.Shared.Abstractions;
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {

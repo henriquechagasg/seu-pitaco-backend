@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Domain.Entities;
+using WebApi.Surveys.Domain.Entities;
 
-namespace WebApi.Infrastructure
+namespace WebApi.Shared.Infrastructure
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {

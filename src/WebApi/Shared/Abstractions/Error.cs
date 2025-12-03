@@ -1,4 +1,4 @@
-namespace WebApi.Domain.Abstractions;
+namespace WebApi.Shared.Abstractions;
 
 public sealed record Error(string Code, string? Description = null)
 {

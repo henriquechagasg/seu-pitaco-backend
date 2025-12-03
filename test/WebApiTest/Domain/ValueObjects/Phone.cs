@@ -1,5 +1,5 @@
-using WebApi.Domain.Errors;
-using WebApi.Domain.ValueObjects;
+using WebApi.Shared.Domain.Errors;
+using WebApi.Shared.Domain.ValueObjects;
 using Xunit.Sdk;
 
 namespace WebApiTest.Domain.ValueObjects;

@@ -1,6 +1,6 @@
 using Amazon.DynamoDBv2.DataModel;
 
-namespace WebApi.Domain.Entities;
+namespace WebApi.Surveys.Domain.Entities;
 
 [DynamoDBTable("Surveys-uhzgid4f4reehhiwpehslbmomu-NONE", LowerCamelCaseProperties = true)]
 public class Survey

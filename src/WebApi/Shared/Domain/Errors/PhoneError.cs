@@ -1,6 +1,6 @@
-using WebApi.Domain.Abstractions;
+using WebApi.Shared.Abstractions;
 
-namespace WebApi.Domain.Errors;
+namespace WebApi.Shared.Domain.Errors;
 
 public static class PhoneError
 {

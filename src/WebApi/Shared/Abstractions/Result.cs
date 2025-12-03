@@ -1,4 +1,4 @@
-namespace WebApi.Domain.Abstractions;
+namespace WebApi.Shared.Abstractions;
 
 public class Result<TValue>
 {

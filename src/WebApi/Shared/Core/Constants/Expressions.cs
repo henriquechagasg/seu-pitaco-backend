@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace WebApi.Core.Constants;
+namespace WebApi.Shared.Core.Constants;
 
 public static partial class Expressions
 {

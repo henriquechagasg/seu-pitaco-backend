@@ -1,8 +1,8 @@
-using WebApi.Domain.Abstractions;
-using WebApi.Domain.Errors;
-using static WebApi.Core.Constants.Expressions;
+using WebApi.Shared.Abstractions;
+using WebApi.Shared.Domain.Errors;
+using static WebApi.Shared.Core.Constants.Expressions;
 
-namespace WebApi.Domain.ValueObjects;
+namespace WebApi.Shared.Domain.ValueObjects;
 
 public partial class Phone : ValueObject
 {
