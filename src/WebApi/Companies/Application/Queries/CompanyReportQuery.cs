@@ -1,27 +1,19 @@
 using Amazon.DynamoDBv2.DataModel;
 using WebApi.Companies.Application.Dtos;
 using WebApi.Surveys.Domain.Entities;
+using WebApi.Surveys.Domain.Repositories;
 
 namespace WebApi.Companies.Application.Queries;
 
-public class CompanyReportQuery(IDynamoDBContext _context)
+public class CompanyReportQuery(ISurveysRepository _surveysRepository)
 {
     public async Task<CompanyReportResultDto> Handle()
     {
-        var surveys = await ScanSurveysAsync();
+        var surveys = await _surveysRepository.FindMany();
 
         var Nps = CalculateNPS(surveys);
 
         return new CompanyReportResultDto { Count = surveys.Count, Nps = Nps };
-    }
-
-    private async Task<List<Survey>> ScanSurveysAsync()
-    {
-        var search = _context.FromScanAsync<Survey>(
-            new Amazon.DynamoDBv2.DocumentModel.ScanOperationConfig() { ConsistentRead = true }
-        );
-        var searchResponse = await search.GetRemainingAsync();
-        return searchResponse;
     }
 
     public float CalculateNPS(List<Survey> surveys)

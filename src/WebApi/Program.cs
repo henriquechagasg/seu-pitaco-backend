@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Companies.Application.Endpoints;
 using WebApi.Companies.Application.Queries;
 using WebApi.Shared.Infrastructure;
+using WebApi.Surveys.Domain.Infra.Database;
+using WebApi.Surveys.Domain.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,7 @@ builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonDynamoDB>();
 builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
 
+builder.Services.AddScoped<ISurveysRepository, DynamoDbSurveysRepository>();
 builder.Services.AddScoped<CompanyReportQuery>();
 
 var app = builder.Build();
@@ -33,8 +36,3 @@ app.UseHttpsRedirection();
 app.MapCompaniesEndpoints();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
