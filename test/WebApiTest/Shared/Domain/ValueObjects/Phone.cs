@@ -1,8 +1,7 @@
 using WebApi.Shared.Domain.Errors;
 using WebApi.Shared.Domain.ValueObjects;
-using Xunit.Sdk;
 
-namespace WebApiTest.Domain.ValueObjects;
+namespace WebApiTest.Shared.Domain.ValueObjects;
 
 public class PhoneTests
 {
