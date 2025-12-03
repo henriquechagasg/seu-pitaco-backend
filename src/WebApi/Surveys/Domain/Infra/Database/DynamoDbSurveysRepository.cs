@@ -15,4 +15,9 @@ public class DynamoDbSurveysRepository(IDynamoDBContext _context) : ISurveysRepo
         var searchResponse = await search.GetRemainingAsync();
         return searchResponse;
     }
+
+    public Task<Survey> Save(Survey survey)
+    {
+        throw new NotImplementedException();
+    }
 }
