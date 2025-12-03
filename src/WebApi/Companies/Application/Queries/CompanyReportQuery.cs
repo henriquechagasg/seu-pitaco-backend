@@ -1,4 +1,3 @@
-using Amazon.DynamoDBv2.DataModel;
 using WebApi.Companies.Application.Dtos;
 using WebApi.Surveys.Domain.Entities;
 using WebApi.Surveys.Domain.Repositories;
@@ -11,12 +10,12 @@ public class CompanyReportQuery(ISurveysRepository _surveysRepository)
     {
         var surveys = await _surveysRepository.FindMany();
 
-        var Nps = CalculateNPS(surveys);
+        var nps = CalculateNPS(surveys);
 
-        return new CompanyReportResultDto { Count = surveys.Count, Nps = Nps };
+        return new CompanyReportResultDto { Count = surveys.Count, Nps = nps };
     }
 
-    public float CalculateNPS(List<Survey> surveys)
+    private static float CalculateNPS(List<Survey> surveys)
     {
         var validSurveys = surveys.Where(s => s.NpsScore.HasValue).ToList();
 

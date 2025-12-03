@@ -5,7 +5,7 @@ namespace WebApi.Surveys.Domain.Infra.Database;
 
 public class InMemorySurveysRepository : ISurveysRepository
 {
-    private static readonly List<Survey> _surveys = [];
+    private readonly List<Survey> _surveys = [];
 
     public Task<List<Survey>> FindMany()
     {
