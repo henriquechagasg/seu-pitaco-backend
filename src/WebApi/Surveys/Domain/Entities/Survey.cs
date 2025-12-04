@@ -2,7 +2,7 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace WebApi.Surveys.Domain.Entities;
 
-[DynamoDBTable("Surveys-uhzgid4f4reehhiwpehslbmomu-NONE", LowerCamelCaseProperties = true)]
+[DynamoDBTable("Surveys-trz5bbedcnaipdftxnls3sroya-NONE", LowerCamelCaseProperties = true)]
 public class Survey
 {
     [DynamoDBHashKey]

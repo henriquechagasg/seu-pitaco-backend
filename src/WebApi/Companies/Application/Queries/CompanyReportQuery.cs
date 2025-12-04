@@ -6,30 +6,66 @@ namespace WebApi.Companies.Application.Queries;
 
 public class CompanyReportQuery(ISurveysRepository _surveysRepository)
 {
-    public async Task<CompanyReportResultDto> Handle()
+    public async Task<CompanyReportResultDto?> Handle()
     {
         var surveys = await _surveysRepository.FindMany();
 
-        var nps = CalculateNPS(surveys);
+        var companyName = "carretasmillenium";
+        var companySurveys = surveys.Where(c => c.Company == companyName);
 
-        return new CompanyReportResultDto { Count = surveys.Count, Nps = nps };
+        if (surveys.Count == 0)
+            return null;
+
+        var npsSummary = GetNpsSummary(surveys);
+
+        return new CompanyReportResultDto { Count = surveys.Count, NpsSummary = npsSummary };
     }
 
-    private static float CalculateNPS(List<Survey> surveys)
+    private static NpsSummary GetNpsSummary(List<Survey> surveys)
     {
-        var validSurveys = surveys.Where(s => s.NpsScore.HasValue).ToList();
+        int totalResponses = surveys.Count;
 
-        int totalResponses = validSurveys.Count;
+        int promotersCount = surveys.Count(s => s.NpsScore >= 9);
 
-        if (totalResponses == 0)
-            return 0f;
+        int detractorsCount = surveys.Count(s => s.NpsScore <= 6);
 
-        int promoters = validSurveys.Count(s => s.NpsScore >= 9);
+        int neutralsCount = surveys.Count(s => s.NpsScore >= 7 && s.NpsScore <= 8);
 
-        int detractors = validSurveys.Count(s => s.NpsScore <= 6);
+        float score = (float)(promotersCount - detractorsCount) / totalResponses * 100f;
 
-        float nps = (float)(promoters - detractors) / totalResponses * 100f;
+        var ratingDistribution = GenerateRatingDistribution(surveys);
 
-        return nps;
+        return new NpsSummary
+        {
+            Score = score,
+            PromotersCount = promotersCount,
+            DetractorsCount = detractorsCount,
+            NeutralsCount = neutralsCount,
+            RatingDistribution = ratingDistribution,
+        };
+    }
+
+    private static Dictionary<string, int> GenerateRatingDistribution(List<Survey> surveys)
+    {
+        var ratingDistribution = new Dictionary<string, int>();
+
+        for (int i = 0; i <= 10; i++)
+        {
+            ratingDistribution.Add(i.ToString(), 0);
+        }
+
+        var groupedCounts = surveys
+            .GroupBy(s => s.NpsScore!.Value)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        foreach (var kvp in groupedCounts)
+        {
+            if (kvp.Key >= 0 && kvp.Key <= 10)
+            {
+                ratingDistribution[kvp.Key.ToString()] = kvp.Value;
+            }
+        }
+
+        return ratingDistribution;
     }
 }
