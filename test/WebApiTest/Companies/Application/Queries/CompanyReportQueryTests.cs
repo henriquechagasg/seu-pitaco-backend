@@ -21,7 +21,7 @@ namespace WebApiTest.Companies.Application.Queries
             var expectedCount = 10;
             var surveys = Enumerable
                 .Range(1, expectedCount)
-                .Select(_ => new SurveyBuilder().WithNpsScore(1).Build())
+                .Select(_ => new SurveyBuilder().WithPromoterScore().Build())
                 .ToList();
             foreach (var survey in surveys)
             {
@@ -38,7 +38,7 @@ namespace WebApiTest.Companies.Application.Queries
         {
             var surveys = Enumerable
                 .Range(1, 10)
-                .Select(_ => new SurveyBuilder().WithNpsScore(10).Build())
+                .Select(_ => new SurveyBuilder().WithPromoterScore().Build())
                 .ToList();
             foreach (var survey in surveys)
             {
@@ -56,7 +56,7 @@ namespace WebApiTest.Companies.Application.Queries
             var expectedCount = 10;
             var surveys = Enumerable
                 .Range(1, expectedCount)
-                .Select(_ => new SurveyBuilder().WithNpsScore(1).Build())
+                .Select(_ => new SurveyBuilder().WithDetractorScore().Build())
                 .ToList();
             foreach (var survey in surveys)
             {

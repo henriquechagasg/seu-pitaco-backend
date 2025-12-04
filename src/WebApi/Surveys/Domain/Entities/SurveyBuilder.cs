@@ -3,10 +3,10 @@ namespace WebApi.Surveys.Domain.Entities;
 public class SurveyBuilder
 {
     private readonly Survey _survey;
+    private readonly Random random = Random.Shared;
 
     public SurveyBuilder()
     {
-        var random = new Random();
         _survey = new Survey
         {
             Id = Guid.NewGuid().ToString(),
@@ -18,51 +18,15 @@ public class SurveyBuilder
         };
     }
 
-    public SurveyBuilder WithId(string id)
+    public SurveyBuilder WithDetractorScore()
     {
-        _survey.Id = id;
+        _survey.NpsScore = random.Next(0, 6);
         return this;
     }
 
-    public SurveyBuilder WithCompany(string company)
+    public SurveyBuilder WithPromoterScore()
     {
-        _survey.Company = company;
-        return this;
-    }
-
-    public SurveyBuilder WithDuration(int duration)
-    {
-        _survey.Duration = duration;
-        return this;
-    }
-
-    public SurveyBuilder WithRecaptchaToken(string recaptchaToken)
-    {
-        _survey.RecaptchaToken = recaptchaToken;
-        return this;
-    }
-
-    public SurveyBuilder WithNpsScore(int npsScore)
-    {
-        _survey.NpsScore = npsScore;
-        return this;
-    }
-
-    public SurveyBuilder WithAttendanceRating(int attendanceRating)
-    {
-        _survey.AttendanceRating = attendanceRating;
-        return this;
-    }
-
-    public SurveyBuilder WithGeneralComment(string generalComment)
-    {
-        _survey.GeneralComment = generalComment;
-        return this;
-    }
-
-    public SurveyBuilder WithRecaptchaScore(float recaptchaScore)
-    {
-        _survey.RecaptchaScore = recaptchaScore;
+        _survey.NpsScore = random.Next(9, 10);
         return this;
     }
 
