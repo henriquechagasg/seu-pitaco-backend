@@ -1,6 +1,6 @@
 using WebApi.Companies.Application.Commands.CreateCompany;
 using WebApi.Companies.Application.Dtos;
-using WebApi.Companies.Application.Queries;
+using WebApi.Companies.Application.Queries.ShowCompanyReport;
 
 namespace WebApi.Companies.Application.Endpoints
 {
@@ -12,25 +12,23 @@ namespace WebApi.Companies.Application.Endpoints
 
             group.MapPost("/", CreateCompany).WithName("CreateCompany").WithOpenApi();
 
-            group
-                .MapGet("/report", GetCompanyReport)
-                .Produces<CompanyReportResultDto>(StatusCodes.Status200OK)
-                .WithName("GetCompanyReport")
-                .WithOpenApi();
+            group.MapGet("/report", ShowCompanyReport).WithName("ShowCompanyReport").WithOpenApi();
         }
 
-        public static async Task<IResult> GetCompanyReport(CompanyReportQuery CompanyReportQuery)
+        public static async Task<CompanyReportResultDto?> ShowCompanyReport(
+            ShowCompanyReportQuery handler
+        )
         {
-            var item = await CompanyReportQuery.Handle();
-            return Results.Ok(item);
+            var item = await handler.Handle();
+            return item;
         }
 
         public static async Task<IResult> CreateCompany(
             CreateCompanyCommand command,
-            CreateCompanyCommandHandler createCompanyCommandHandler
+            CreateCompanyCommandHandler handler
         )
         {
-            var item = await createCompanyCommandHandler.Handle(command);
+            var item = await handler.Handle(command);
             return Results.Created($"/api/companies/{item.Id}", item);
         }
     }

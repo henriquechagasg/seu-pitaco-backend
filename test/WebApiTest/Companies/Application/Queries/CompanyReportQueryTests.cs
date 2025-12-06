@@ -4,16 +4,16 @@ using WebApi.Surveys.Infra.Database;
 
 namespace WebApiTest.Companies.Application.Queries
 {
-    public class CompanyReportQueryTests
+    public class ShowCompanyReportQueryTests
     {
         private readonly Random random = Random.Shared;
         private readonly InMemorySurveysRepository _surveysRepository;
-        private readonly CompanyReportQuery _query;
+        private readonly ShowCompanyReportQuery _query;
 
-        public CompanyReportQueryTests()
+        public ShowCompanyReportQueryTests()
         {
             _surveysRepository = new InMemorySurveysRepository();
-            _query = new CompanyReportQuery(_surveysRepository);
+            _query = new ShowCompanyReportQuery(_surveysRepository);
         }
 
         [Fact]

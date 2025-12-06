@@ -2,9 +2,9 @@ using WebApi.Companies.Application.Dtos;
 using WebApi.Surveys.Domain.Repositories;
 using WebApi.Surveys.Infra.Database;
 
-namespace WebApi.Companies.Application.Queries;
+namespace WebApi.Companies.Application.Queries.ShowCompanyReport;
 
-public class CompanyReportQuery(ISurveysRepository _surveysRepository)
+public class ShowCompanyReportQuery(ISurveysRepository _surveysRepository)
 {
     public async Task<CompanyReportResultDto?> Handle()
     {
