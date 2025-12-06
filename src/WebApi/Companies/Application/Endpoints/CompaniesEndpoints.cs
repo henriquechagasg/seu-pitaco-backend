@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using WebApi.Companies.Application.Commands.CreateCompany;
 using WebApi.Companies.Application.Dtos;
 using WebApi.Companies.Application.Queries.ListCompanies;
 using WebApi.Companies.Application.Queries.ShowCompany;
 using WebApi.Companies.Application.Queries.ShowCompanyReport;
+using WebApi.Companies.Domain.Entities;
+using WebApi.Shared.Abstractions;
 
 namespace WebApi.Companies.Application.Endpoints
 {
@@ -29,7 +32,7 @@ namespace WebApi.Companies.Application.Endpoints
             return item;
         }
 
-        public static async Task<IResult> CreateCompany(
+        public static async Task<Results<CreatedAtRoute<Company>, BadRequest<Error>>> CreateCompany(
             CreateCompanyCommand command,
             CreateCompanyCommandHandler handler
         )
@@ -38,21 +41,27 @@ namespace WebApi.Companies.Application.Endpoints
 
             if (result.IsFailure)
             {
-                return Results.BadRequest(result.Error);
+                return TypedResults.BadRequest(result.Error);
             }
 
             var value = result.Value;
-            return Results.Created($"/api/companies/{value.Id}", value);
+            return TypedResults.CreatedAtRoute(
+                routeName: "ShowCompany",
+                routeValues: new { id = value.Id },
+                value: value
+            );
         }
 
-        public static async Task<IResult> ListCompanies(ListCompaniesQueryHandler handler)
+        public static async Task<Ok<List<Company>>> ListCompanies(ListCompaniesQueryHandler handler)
         {
             var result = await handler.Handle();
-            var value = result.Value;
-            return Results.Ok(value);
+            return TypedResults.Ok(result.Value);
         }
 
-        public static async Task<IResult> ShowCompany(string Id, ShowCompanyQueryHandler handler)
+        public static async Task<Results<Ok<Company>, BadRequest<Error>>> ShowCompany(
+            string Id,
+            ShowCompanyQueryHandler handler
+        )
         {
             var query = new ShowCompanyQuery { Id = Id };
 
@@ -60,11 +69,11 @@ namespace WebApi.Companies.Application.Endpoints
 
             if (result.IsFailure)
             {
-                return Results.BadRequest(result.Error);
+                return TypedResults.BadRequest(result.Error);
             }
 
             var value = result.Value;
-            return Results.Ok(value);
+            return TypedResults.Ok(value);
         }
     }
 }
