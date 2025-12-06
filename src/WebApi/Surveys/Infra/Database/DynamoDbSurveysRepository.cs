@@ -1,14 +1,13 @@
 using Amazon.DynamoDBv2.DataModel;
-using WebApi.Surveys.Domain.Entities;
 using WebApi.Surveys.Domain.Repositories;
 
-namespace WebApi.Surveys.Domain.Infra.Database;
+namespace WebApi.Surveys.Infra.Database;
 
 public class DynamoDbSurveysRepository(IDynamoDBContext _context) : ISurveysRepository
 {
-    public async Task<List<Survey>> FindMany()
+    public async Task<List<DynamoDbSurvey>> FindMany()
     {
-        var search = _context.FromScanAsync<Survey>(
+        var search = _context.FromScanAsync<DynamoDbSurvey>(
             new Amazon.DynamoDBv2.DocumentModel.ScanOperationConfig() { ConsistentRead = true }
         );
 
@@ -16,7 +15,7 @@ public class DynamoDbSurveysRepository(IDynamoDBContext _context) : ISurveysRepo
         return searchResponse;
     }
 
-    public Task<Survey> Save(Survey survey)
+    public Task<DynamoDbSurvey> Save(DynamoDbSurvey survey)
     {
         throw new NotImplementedException();
     }

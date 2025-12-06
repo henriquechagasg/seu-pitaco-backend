@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApi.Companies.Application.Endpoints;
 using WebApi.Companies.Application.Queries;
 using WebApi.Shared.Infrastructure;
-using WebApi.Surveys.Domain.Infra.Database;
 using WebApi.Surveys.Domain.Repositories;
+using WebApi.Surveys.Infra.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 

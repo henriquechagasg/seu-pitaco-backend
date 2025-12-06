@@ -1,13 +1,15 @@
+using WebApi.Surveys.Infra.Database;
+
 namespace WebApi.Surveys.Domain.Entities;
 
 public class SurveyBuilder
 {
-    private readonly Survey _survey;
+    private readonly DynamoDbSurvey _survey;
     private readonly Random random = Random.Shared;
 
     public SurveyBuilder()
     {
-        _survey = new Survey
+        _survey = new DynamoDbSurvey
         {
             Id = Guid.NewGuid().ToString(),
             Company = "seu-pitaco",
@@ -42,7 +44,7 @@ public class SurveyBuilder
         return this;
     }
 
-    public Survey Build()
+    public DynamoDbSurvey Build()
     {
         return _survey;
     }

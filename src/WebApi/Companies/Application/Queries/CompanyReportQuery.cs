@@ -1,6 +1,6 @@
 using WebApi.Companies.Application.Dtos;
-using WebApi.Surveys.Domain.Entities;
 using WebApi.Surveys.Domain.Repositories;
+using WebApi.Surveys.Infra.Database;
 
 namespace WebApi.Companies.Application.Queries;
 
@@ -21,7 +21,7 @@ public class CompanyReportQuery(ISurveysRepository _surveysRepository)
         return new CompanyReportResultDto { Count = surveys.Count, NpsSummary = npsSummary };
     }
 
-    private static NpsSummary GetNpsSummary(List<Survey> surveys)
+    private static NpsSummary GetNpsSummary(List<DynamoDbSurvey> surveys)
     {
         int totalResponses = surveys.Count;
 
@@ -45,7 +45,7 @@ public class CompanyReportQuery(ISurveysRepository _surveysRepository)
         };
     }
 
-    private static Dictionary<string, int> GenerateRatingDistribution(List<Survey> surveys)
+    private static Dictionary<string, int> GenerateRatingDistribution(List<DynamoDbSurvey> surveys)
     {
         var ratingDistribution = new Dictionary<string, int>();
 

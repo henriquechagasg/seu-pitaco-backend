@@ -1,9 +1,9 @@
 using Amazon.DynamoDBv2.DataModel;
 
-namespace WebApi.Surveys.Domain.Entities;
+namespace WebApi.Surveys.Infra.Database;
 
 [DynamoDBTable("Surveys-trz5bbedcnaipdftxnls3sroya-NONE", LowerCamelCaseProperties = true)]
-public class Survey
+public class DynamoDbSurvey
 {
     [DynamoDBHashKey]
     public required string Id { get; set; }

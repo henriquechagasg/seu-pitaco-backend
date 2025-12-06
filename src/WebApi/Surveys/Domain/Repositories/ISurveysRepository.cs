@@ -1,9 +1,9 @@
-using WebApi.Surveys.Domain.Entities;
+using WebApi.Surveys.Infra.Database;
 
 namespace WebApi.Surveys.Domain.Repositories;
 
 public interface ISurveysRepository
 {
-    Task<List<Survey>> FindMany();
-    Task<Survey> Save(Survey survey);
+    Task<List<DynamoDbSurvey>> FindMany();
+    Task<DynamoDbSurvey> Save(DynamoDbSurvey survey);
 }

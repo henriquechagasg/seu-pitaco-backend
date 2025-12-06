@@ -1,18 +1,17 @@
-using WebApi.Surveys.Domain.Entities;
 using WebApi.Surveys.Domain.Repositories;
 
-namespace WebApi.Surveys.Domain.Infra.Database;
+namespace WebApi.Surveys.Infra.Database;
 
 public class InMemorySurveysRepository : ISurveysRepository
 {
-    private readonly List<Survey> _surveys = [];
+    private readonly List<DynamoDbSurvey> _surveys = [];
 
-    public Task<List<Survey>> FindMany()
+    public Task<List<DynamoDbSurvey>> FindMany()
     {
         return Task.FromResult(_surveys.ToList());
     }
 
-    public Task<Survey> Save(Survey survey)
+    public Task<DynamoDbSurvey> Save(DynamoDbSurvey survey)
     {
         var existingSurvey = _surveys.FirstOrDefault(s => s.Id == survey.Id);
 

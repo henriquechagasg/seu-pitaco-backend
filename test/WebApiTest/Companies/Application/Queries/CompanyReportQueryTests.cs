@@ -1,6 +1,6 @@
 using WebApi.Companies.Application.Queries;
 using WebApi.Surveys.Domain.Entities;
-using WebApi.Surveys.Domain.Infra.Database;
+using WebApi.Surveys.Infra.Database;
 
 namespace WebApiTest.Companies.Application.Queries
 {
