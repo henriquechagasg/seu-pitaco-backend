@@ -1,4 +1,4 @@
 {
   "FSharp.suggestGitignore": false,
-  "cSpell.words": ["Dtos", "Xunit"]
+  "cSpell.words": ["Dtos", "Npgsql", "Xunit"]
 }
