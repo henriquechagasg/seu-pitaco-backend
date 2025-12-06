@@ -1,3 +1,5 @@
+using WebApi.Companies.Application.Dtos;
+using WebApi.Companies.Application.Mapping;
 using WebApi.Companies.Domain.Entities;
 using WebApi.Shared.Abstractions;
 using WebApi.Shared.Infrastructure;
@@ -6,7 +8,7 @@ namespace WebApi.Companies.Application.Queries.ShowCompany;
 
 public class ShowCompanyQueryHandler(AppDbContext _context)
 {
-    public async Task<Result<Company>> Handle(ShowCompanyQuery query)
+    public async Task<Result<CompanyDto>> Handle(ShowCompanyQuery query)
     {
         if (!Guid.TryParse(query.Id, out var companyId))
         {
@@ -20,6 +22,6 @@ public class ShowCompanyQueryHandler(AppDbContext _context)
             return new Error("NotFoundError", "Empresa não encontrada.");
         }
 
-        return company;
+        return company.ToDto();
     }
 }

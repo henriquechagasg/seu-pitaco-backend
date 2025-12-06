@@ -4,7 +4,6 @@ using WebApi.Companies.Application.Dtos;
 using WebApi.Companies.Application.Queries.ListCompanies;
 using WebApi.Companies.Application.Queries.ShowCompany;
 using WebApi.Companies.Application.Queries.ShowCompanyReport;
-using WebApi.Companies.Domain.Entities;
 using WebApi.Shared.Abstractions;
 
 namespace WebApi.Companies.Application.Endpoints
@@ -51,13 +50,15 @@ namespace WebApi.Companies.Application.Endpoints
             );
         }
 
-        public static async Task<Ok<List<Company>>> ListCompanies(ListCompaniesQueryHandler handler)
+        public static async Task<Ok<List<CompanyDto>>> ListCompanies(
+            ListCompaniesQueryHandler handler
+        )
         {
             var result = await handler.Handle();
             return TypedResults.Ok(result.Value);
         }
 
-        public static async Task<Results<Ok<Company>, BadRequest<Error>>> ShowCompany(
+        public static async Task<Results<Ok<CompanyDto>, BadRequest<Error>>> ShowCompany(
             string Id,
             ShowCompanyQueryHandler handler
         )
