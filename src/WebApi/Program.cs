@@ -3,6 +3,8 @@ using Amazon.DynamoDBv2.DataModel;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Companies.Application.Commands.CreateCompany;
 using WebApi.Companies.Application.Endpoints;
+using WebApi.Companies.Application.Queries.ListCompanies;
+using WebApi.Companies.Application.Queries.ShowCompany;
 using WebApi.Companies.Application.Queries.ShowCompanyReport;
 using WebApi.Shared.Infrastructure;
 using WebApi.Surveys.Domain.Repositories;
@@ -27,6 +29,8 @@ builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
 builder.Services.AddScoped<ISurveysRepository, DynamoDbSurveysRepository>();
 builder.Services.AddScoped<ShowCompanyReportQuery>();
 builder.Services.AddScoped<CreateCompanyCommandHandler>();
+builder.Services.AddScoped<ListCompaniesQueryHandler>();
+builder.Services.AddScoped<ShowCompanyQueryHandler>();
 
 var app = builder.Build();
 

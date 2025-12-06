@@ -37,7 +37,7 @@ public class Result<TValue>
         return _isSuccess ? success(_value!) : failure(_error);
     }
 
-    public TValue GetValue() => Match(_ => _, e => throw new Exception("Expected success result"));
+    public TValue Value => Match(_ => _, e => throw new Exception("Expected success result"));
 
-    public Error GetError() => Match(_ => throw new Exception("Expected error result"), e => e);
+    public Error Error => Match(_ => throw new Exception("Expected error result"), e => e);
 }
