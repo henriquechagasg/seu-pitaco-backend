@@ -32,10 +32,9 @@ namespace WebApi.Companies.Application.Endpoints
             return item;
         }
 
-        public static async Task<Results<CreatedAtRoute<Company>, BadRequest<Error>>> CreateCompany(
-            CreateCompanyCommand command,
-            CreateCompanyCommandHandler handler
-        )
+        public static async Task<
+            Results<CreatedAtRoute<CompanyDto>, BadRequest<Error>>
+        > CreateCompany(CreateCompanyCommand command, CreateCompanyCommandHandler handler)
         {
             var result = await handler.Handle(command);
 
