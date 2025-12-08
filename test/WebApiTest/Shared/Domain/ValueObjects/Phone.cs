@@ -16,7 +16,7 @@ public class PhoneTests
 
         // Assert
         Assert.True(result.IsFailure);
-        var error = result.GetError();
+        var error = result.Error;
         Assert.Equal(PhoneError.Empty, error);
     }
 
@@ -31,7 +31,7 @@ public class PhoneTests
 
         // Assert
         Assert.True(result.IsFailure);
-        var error = result.GetError();
+        var error = result.Error;
         Assert.Equal(PhoneError.TooLong, error);
     }
 
@@ -47,7 +47,7 @@ public class PhoneTests
 
         // Assert
         Assert.True(result.IsFailure);
-        var error = result.GetError();
+        var error = result.Error;
         Assert.Equal(PhoneError.Invalid, error);
     }
 
@@ -67,7 +67,7 @@ public class PhoneTests
 
         // Assert
         Assert.True(result.IsSuccess);
-        var phone = result.GetValue();
+        var phone = result.Value;
         Assert.Equal(expected, phone.Value);
     }
 
@@ -82,7 +82,7 @@ public class PhoneTests
 
         // Assert
         Assert.True(result.IsSuccess);
-        var phone = result.GetValue();
+        var phone = result.Value;
         Assert.Equal("11999999999", phone.Value);
     }
 
@@ -97,7 +97,7 @@ public class PhoneTests
 
         // Assert
         Assert.True(result.IsSuccess);
-        var phone = result.GetValue();
+        var phone = result.Value;
         Assert.Equal("37999862716", phone.Value);
     }
 
@@ -112,7 +112,7 @@ public class PhoneTests
 
         // Assert
         Assert.True(result.IsSuccess);
-        var phone = result.GetValue();
+        var phone = result.Value;
         Assert.Equal("37999862716", phone.Value);
     }
 }
