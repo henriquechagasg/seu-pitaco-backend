@@ -11,6 +11,7 @@ namespace WebApi.Shared.Infrastructure
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
+        public DbSet<SurveySubmission> SurveySubmissions { get; set; }
         public DbSet<SurveyAnswer> SurveyAnswers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -69,16 +70,33 @@ namespace WebApi.Shared.Infrastructure
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity<SurveySubmission>(entity =>
+            {
+                entity.HasKey(s => s.Id);
+
+                entity.HasOne(s => s.Survey).WithMany().HasForeignKey(s => s.SurveyId).IsRequired();
+
+                entity
+                    .HasMany(s => s.Answers)
+                    .WithOne(a => a.Submission)
+                    .HasForeignKey(a => a.SubmissionId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(s => new { s.SurveyId, s.CreatedAt });
+
+                entity.Property(s => s.CreatedAt).IsRequired();
+            });
+
             modelBuilder.Entity<SurveyAnswer>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
-                entity.HasIndex(a => new { a.SurveyId, a.CreatedAt });
+                entity.HasIndex(a => new { a.SubmissionId, a.CreatedAt });
 
                 entity
-                    .HasOne(a => a.Survey)
+                    .HasOne(a => a.Submission)
                     .WithMany()
-                    .HasForeignKey(a => a.SurveyId)
+                    .HasForeignKey(a => a.SubmissionId)
                     .OnDelete(DeleteBehavior.Restrict);
 
                 entity

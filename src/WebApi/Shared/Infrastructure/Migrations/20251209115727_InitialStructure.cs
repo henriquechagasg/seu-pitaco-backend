@@ -151,16 +151,12 @@ namespace Shared.Infrastructure.Migrations
             );
 
             migrationBuilder.CreateTable(
-                name: "survey_answers",
+                name: "survey_submissions",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     survey_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    question_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    numeric_value = table.Column<int>(type: "integer", nullable: true),
-                    text_value = table.Column<string>(type: "text", nullable: true),
-                    extra_comment = table.Column<string>(type: "text", nullable: true),
-                    customer_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    metadata = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
@@ -168,13 +164,36 @@ namespace Shared.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_survey_answers", x => x.id);
+                    table.PrimaryKey("pk_survey_submissions", x => x.id);
                     table.ForeignKey(
-                        name: "fk_survey_answers_customers_customer_id",
-                        column: x => x.customer_id,
-                        principalTable: "customers",
-                        principalColumn: "id"
+                        name: "fk_survey_submissions_surveys_survey_id",
+                        column: x => x.survey_id,
+                        principalTable: "surveys",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade
                     );
+                }
+            );
+
+            migrationBuilder.CreateTable(
+                name: "survey_answers",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    submission_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    question_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    numeric_value = table.Column<int>(type: "integer", nullable: true),
+                    text_value = table.Column<string>(type: "text", nullable: true),
+                    extra_comment = table.Column<string>(type: "text", nullable: true),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
+                    survey_submission_id = table.Column<Guid>(type: "uuid", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_survey_answers", x => x.id);
                     table.ForeignKey(
                         name: "fk_survey_answers_survey_questions_question_id",
                         column: x => x.question_id,
@@ -183,11 +202,17 @@ namespace Shared.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "fk_survey_answers_surveys_survey_id",
-                        column: x => x.survey_id,
-                        principalTable: "surveys",
+                        name: "fk_survey_answers_survey_submissions_submission_id",
+                        column: x => x.submission_id,
+                        principalTable: "survey_submissions",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
+                    );
+                    table.ForeignKey(
+                        name: "fk_survey_answers_survey_submissions_survey_submission_id",
+                        column: x => x.survey_submission_id,
+                        principalTable: "survey_submissions",
+                        principalColumn: "id"
                     );
                 }
             );
@@ -206,27 +231,33 @@ namespace Shared.Infrastructure.Migrations
             );
 
             migrationBuilder.CreateIndex(
-                name: "ix_survey_answers_customer_id",
-                table: "survey_answers",
-                column: "customer_id"
-            );
-
-            migrationBuilder.CreateIndex(
                 name: "ix_survey_answers_question_id",
                 table: "survey_answers",
                 column: "question_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "ix_survey_answers_survey_id_created_at",
+                name: "ix_survey_answers_submission_id_created_at",
                 table: "survey_answers",
-                columns: new[] { "survey_id", "created_at" }
+                columns: new[] { "submission_id", "created_at" }
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "ix_survey_answers_survey_submission_id",
+                table: "survey_answers",
+                column: "survey_submission_id"
             );
 
             migrationBuilder.CreateIndex(
                 name: "ix_survey_questions_survey_id",
                 table: "survey_questions",
                 column: "survey_id"
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "ix_survey_submissions_survey_id_created_at",
+                table: "survey_submissions",
+                columns: new[] { "survey_id", "created_at" }
             );
 
             migrationBuilder.CreateIndex(
@@ -239,11 +270,13 @@ namespace Shared.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "survey_answers");
-
             migrationBuilder.DropTable(name: "customers");
 
+            migrationBuilder.DropTable(name: "survey_answers");
+
             migrationBuilder.DropTable(name: "survey_questions");
+
+            migrationBuilder.DropTable(name: "survey_submissions");
 
             migrationBuilder.DropTable(name: "surveys");
 

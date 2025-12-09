@@ -170,10 +170,6 @@ namespace Shared.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("customer_id");
-
                     b.Property<string>("ExtraComment")
                         .HasColumnType("text")
                         .HasColumnName("extra_comment");
@@ -186,9 +182,13 @@ namespace Shared.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("question_id");
 
-                    b.Property<Guid>("SurveyId")
+                    b.Property<Guid>("SubmissionId")
                         .HasColumnType("uuid")
-                        .HasColumnName("survey_id");
+                        .HasColumnName("submission_id");
+
+                    b.Property<Guid?>("SurveySubmissionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("survey_submission_id");
 
                     b.Property<string>("TextValue")
                         .HasColumnType("text")
@@ -197,14 +197,14 @@ namespace Shared.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_survey_answers");
 
-                    b.HasIndex("CustomerId")
-                        .HasDatabaseName("ix_survey_answers_customer_id");
-
                     b.HasIndex("QuestionId")
                         .HasDatabaseName("ix_survey_answers_question_id");
 
-                    b.HasIndex("SurveyId", "CreatedAt")
-                        .HasDatabaseName("ix_survey_answers_survey_id_created_at");
+                    b.HasIndex("SurveySubmissionId")
+                        .HasDatabaseName("ix_survey_answers_survey_submission_id");
+
+                    b.HasIndex("SubmissionId", "CreatedAt")
+                        .HasDatabaseName("ix_survey_answers_submission_id_created_at");
 
                     b.ToTable("survey_answers", (string)null);
                 });
@@ -255,6 +255,34 @@ namespace Shared.Infrastructure.Migrations
                     b.ToTable("survey_questions", (string)null);
                 });
 
+            modelBuilder.Entity("WebApi.Surveys.Domain.Entities.SurveySubmission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Metadata")
+                        .HasColumnType("text")
+                        .HasColumnName("metadata");
+
+                    b.Property<Guid>("SurveyId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("survey_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_survey_submissions");
+
+                    b.HasIndex("SurveyId", "CreatedAt")
+                        .HasDatabaseName("ix_survey_submissions_survey_id_created_at");
+
+                    b.ToTable("survey_submissions", (string)null);
+                });
+
             modelBuilder.Entity("WebApi.Customers.Domain.Entities.Customer", b =>
                 {
                     b.HasOne("WebApi.Companies.Domain.Entities.Company", "Company")
@@ -281,11 +309,6 @@ namespace Shared.Infrastructure.Migrations
 
             modelBuilder.Entity("WebApi.Surveys.Domain.Entities.SurveyAnswer", b =>
                 {
-                    b.HasOne("WebApi.Customers.Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .HasConstraintName("fk_survey_answers_customers_customer_id");
-
                     b.HasOne("WebApi.Surveys.Domain.Entities.SurveyQuestion", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
@@ -293,18 +316,21 @@ namespace Shared.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_survey_answers_survey_questions_question_id");
 
-                    b.HasOne("WebApi.Surveys.Domain.Entities.Survey", "Survey")
+                    b.HasOne("WebApi.Surveys.Domain.Entities.SurveySubmission", "Submission")
                         .WithMany()
-                        .HasForeignKey("SurveyId")
+                        .HasForeignKey("SubmissionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_survey_answers_surveys_survey_id");
+                        .HasConstraintName("fk_survey_answers_survey_submissions_submission_id");
 
-                    b.Navigation("Customer");
+                    b.HasOne("WebApi.Surveys.Domain.Entities.SurveySubmission", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("SurveySubmissionId")
+                        .HasConstraintName("fk_survey_answers_survey_submissions_survey_submission_id");
 
                     b.Navigation("Question");
 
-                    b.Navigation("Survey");
+                    b.Navigation("Submission");
                 });
 
             modelBuilder.Entity("WebApi.Surveys.Domain.Entities.SurveyQuestion", b =>
@@ -319,6 +345,18 @@ namespace Shared.Infrastructure.Migrations
                     b.Navigation("Survey");
                 });
 
+            modelBuilder.Entity("WebApi.Surveys.Domain.Entities.SurveySubmission", b =>
+                {
+                    b.HasOne("WebApi.Surveys.Domain.Entities.Survey", "Survey")
+                        .WithMany()
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_survey_submissions_surveys_survey_id");
+
+                    b.Navigation("Survey");
+                });
+
             modelBuilder.Entity("WebApi.Companies.Domain.Entities.Company", b =>
                 {
                     b.Navigation("Customers");
@@ -329,6 +367,11 @@ namespace Shared.Infrastructure.Migrations
             modelBuilder.Entity("WebApi.Surveys.Domain.Entities.Survey", b =>
                 {
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("WebApi.Surveys.Domain.Entities.SurveySubmission", b =>
+                {
+                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }
