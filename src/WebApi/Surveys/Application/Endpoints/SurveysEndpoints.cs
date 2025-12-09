@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Shared.Abstractions;
-using WebApi.Surveys.Application.Commands.UpdateSurveyQuestionsCommand;
+using WebApi.Surveys.Application.Commands.UpdateSurveyQuestions;
 using WebApi.Surveys.Application.Dtos;
 
 namespace WebApi.Surveys.Application.Endpoints;

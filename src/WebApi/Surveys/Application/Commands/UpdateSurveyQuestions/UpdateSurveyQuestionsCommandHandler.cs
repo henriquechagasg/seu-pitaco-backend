@@ -4,7 +4,7 @@ using WebApi.Shared.Infrastructure;
 using WebApi.Surveys.Application.Dtos;
 using WebApi.Surveys.Application.Mappings;
 
-namespace WebApi.Surveys.Application.Commands.UpdateSurveyQuestionsCommand;
+namespace WebApi.Surveys.Application.Commands.UpdateSurveyQuestions;
 
 public class UpdateSurveyQuestionsCommandHandler(AppDbContext _context)
 {

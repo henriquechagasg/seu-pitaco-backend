@@ -8,7 +8,7 @@ using WebApi.Companies.Application.Queries.ListCompanies;
 using WebApi.Companies.Application.Queries.ShowCompany;
 using WebApi.Companies.Application.Queries.ShowCompanyReport;
 using WebApi.Shared.Infrastructure;
-using WebApi.Surveys.Application.Commands.UpdateSurveyQuestionsCommand;
+using WebApi.Surveys.Application.Commands.UpdateSurveyQuestions;
 using WebApi.Surveys.Application.Endpoints;
 using WebApi.Surveys.Domain.Repositories;
 using WebApi.Surveys.Infra.Database;
