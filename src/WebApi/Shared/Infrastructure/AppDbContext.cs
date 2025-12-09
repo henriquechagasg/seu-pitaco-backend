@@ -47,11 +47,17 @@ namespace WebApi.Shared.Infrastructure
                     .WithMany(c => c.Surveys)
                     .HasForeignKey(s => s.CompanyId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                entity
+                    .HasMany(q => q.Questions)
+                    .WithOne(s => s.Survey)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<SurveyQuestion>(entity =>
             {
                 entity.HasKey(e => e.Id);
+
                 entity.Property(e => e.Title).IsRequired().HasMaxLength(300);
 
                 entity.Property(e => e.Metadata).HasColumnType("jsonb");

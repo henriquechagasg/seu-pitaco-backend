@@ -1,4 +1,5 @@
 using WebApi.Companies.Application.Queries;
+using WebApi.Companies.Application.Queries.ShowCompanyReport;
 using WebApi.Surveys.Domain.Entities;
 using WebApi.Surveys.Infra.Database;
 

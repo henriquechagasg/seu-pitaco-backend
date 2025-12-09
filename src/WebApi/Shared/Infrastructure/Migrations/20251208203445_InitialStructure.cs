@@ -16,16 +16,31 @@ namespace Shared.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    slug = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                    name = table.Column<string>(
+                        type: "character varying(150)",
+                        maxLength: 150,
+                        nullable: false
+                    ),
+                    slug = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false
+                    ),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
+                    updated_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_companies", x => x.id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "customers",
@@ -33,12 +48,23 @@ namespace Shared.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     company_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    name = table.Column<string>(
+                        type: "character varying(150)",
+                        maxLength: 150,
+                        nullable: false
+                    ),
                     cpf = table.Column<string>(type: "text", nullable: false),
-                    contact = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    contact = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
                     total_feedbacks = table.Column<int>(type: "integer", nullable: false),
                     fidelity_points = table.Column<int>(type: "integer", nullable: false),
-                    last_feedback_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    last_feedback_date = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                 },
                 constraints: table =>
                 {
@@ -48,8 +74,10 @@ namespace Shared.Infrastructure.Migrations
                         column: x => x.company_id,
                         principalTable: "companies",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "surveys",
@@ -57,11 +85,22 @@ namespace Shared.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     company_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    title = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: false
+                    ),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
+                    is_default = table.Column<bool>(type: "boolean", nullable: false),
                     metadata = table.Column<string>(type: "text", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
+                    updated_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                 },
                 constraints: table =>
                 {
@@ -71,8 +110,10 @@ namespace Shared.Infrastructure.Migrations
                         column: x => x.company_id,
                         principalTable: "companies",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "survey_questions",
@@ -80,12 +121,16 @@ namespace Shared.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     survey_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    title = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    title = table.Column<string>(
+                        type: "character varying(300)",
+                        maxLength: 300,
+                        nullable: false
+                    ),
                     order = table.Column<int>(type: "integer", nullable: false),
                     type = table.Column<int>(type: "integer", nullable: false),
                     is_required = table.Column<bool>(type: "boolean", nullable: false),
                     allow_comment = table.Column<bool>(type: "boolean", nullable: false),
-                    metadata = table.Column<string>(type: "jsonb", nullable: true)
+                    metadata = table.Column<string>(type: "jsonb", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -95,8 +140,10 @@ namespace Shared.Infrastructure.Migrations
                         column: x => x.survey_id,
                         principalTable: "surveys",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "survey_answers",
@@ -109,7 +156,10 @@ namespace Shared.Infrastructure.Migrations
                     text_value = table.Column<string>(type: "text", nullable: true),
                     extra_comment = table.Column<string>(type: "text", nullable: true),
                     customer_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                 },
                 constraints: table =>
                 {
@@ -118,75 +168,81 @@ namespace Shared.Infrastructure.Migrations
                         name: "fk_survey_answers_customers_customer_id",
                         column: x => x.customer_id,
                         principalTable: "customers",
-                        principalColumn: "id");
+                        principalColumn: "id"
+                    );
                     table.ForeignKey(
                         name: "fk_survey_answers_survey_questions_question_id",
                         column: x => x.question_id,
                         principalTable: "survey_questions",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Restrict
+                    );
                     table.ForeignKey(
                         name: "fk_survey_answers_surveys_survey_id",
                         column: x => x.survey_id,
                         principalTable: "surveys",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_companies_slug",
                 table: "companies",
                 column: "slug",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_customers_company_id",
                 table: "customers",
-                column: "company_id");
+                column: "company_id"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_survey_answers_customer_id",
                 table: "survey_answers",
-                column: "customer_id");
+                column: "customer_id"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_survey_answers_question_id",
                 table: "survey_answers",
-                column: "question_id");
+                column: "question_id"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_survey_answers_survey_id_created_at",
                 table: "survey_answers",
-                columns: new[] { "survey_id", "created_at" });
+                columns: new[] { "survey_id", "created_at" }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_survey_questions_survey_id",
                 table: "survey_questions",
-                column: "survey_id");
+                column: "survey_id"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_surveys_company_id",
                 table: "surveys",
-                column: "company_id");
+                column: "company_id"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "survey_answers");
+            migrationBuilder.DropTable(name: "survey_answers");
 
-            migrationBuilder.DropTable(
-                name: "customers");
+            migrationBuilder.DropTable(name: "customers");
 
-            migrationBuilder.DropTable(
-                name: "survey_questions");
+            migrationBuilder.DropTable(name: "survey_questions");
 
-            migrationBuilder.DropTable(
-                name: "surveys");
+            migrationBuilder.DropTable(name: "surveys");
 
-            migrationBuilder.DropTable(
-                name: "companies");
+            migrationBuilder.DropTable(name: "companies");
         }
     }
 }

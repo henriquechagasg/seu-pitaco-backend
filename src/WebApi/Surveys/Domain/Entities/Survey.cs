@@ -14,4 +14,13 @@ public class Survey
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public Company Company { get; set; } = null!;
     public ICollection<SurveyQuestion> Questions { get; set; } = [];
+
+    public void UpdateQuestions(List<SurveyQuestion> questions)
+    {
+        int i = 0;
+        foreach (var q in questions)
+            q.Order = i++;
+
+        Questions = questions;
+    }
 }

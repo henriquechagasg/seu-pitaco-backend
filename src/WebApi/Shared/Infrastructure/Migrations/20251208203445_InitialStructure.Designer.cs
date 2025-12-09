@@ -12,8 +12,8 @@ using WebApi.Shared.Infrastructure;
 namespace Shared.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251206172239_AddIsDeafultToSurvey")]
-    partial class AddIsDeafultToSurvey
+    [Migration("20251208203445_InitialStructure")]
+    partial class InitialStructure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
