@@ -6,7 +6,13 @@ namespace WebApi.Surveys.Application.Mappings;
 public static class SurveyMapping
 {
     public static SurveyDto ToDto(this Survey entity) =>
-        new(entity.Id, entity.Title, entity.IsDefault, entity.CreatedAt);
+        new(
+            entity.Id,
+            entity.Title,
+            entity.IsDefault,
+            entity.CreatedAt,
+            [.. entity.Questions.Select(q => q.ToDto())]
+        );
 
     public static SurveyQuestionDto ToDto(this SurveyQuestion entity) =>
         new(

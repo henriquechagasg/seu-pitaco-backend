@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Companies.Application.Dtos;
 using WebApi.Companies.Application.Mapping;
-using WebApi.Companies.Domain.Entities;
 using WebApi.Shared.Abstractions;
 using WebApi.Shared.Infrastructure;
 
@@ -11,7 +10,11 @@ public class ListCompaniesQueryHandler(AppDbContext _context)
 {
     public async Task<Result<List<CompanyDto>>> Handle()
     {
-        var companies = await _context.Companies.ToListAsync();
+        var companies = await _context
+            .Companies.Include(c => c.Surveys)
+                .ThenInclude(s => s.Questions)
+            .ToListAsync();
+
         return companies.Select(c => c.ToDto()).ToList();
     }
 }

@@ -1,6 +1,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using WebApi.Companies.Application.Commands.CreateCompany;
 using WebApi.Companies.Application.Endpoints;
 using WebApi.Companies.Application.Queries.ListCompanies;
@@ -19,8 +20,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("SeuPitacoDb");
-    options.UseNpgsql(connectionString).UseSnakeCaseNamingConvention();
+    var dataSourceBuilder = new NpgsqlDataSourceBuilder(
+        builder.Configuration.GetConnectionString("SeuPitacoDb")
+    );
+
+    dataSourceBuilder.EnableDynamicJson();
+
+    var dataSource = dataSourceBuilder.Build();
+
+    options.UseNpgsql(dataSource).UseSnakeCaseNamingConvention();
 });
 
 var awsOptions = builder.Configuration.GetAWSOptions();

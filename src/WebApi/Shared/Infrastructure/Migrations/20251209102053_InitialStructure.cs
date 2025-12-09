@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
+using WebApi.Surveys.Domain.Entities;
 
 #nullable disable
 
@@ -130,7 +132,10 @@ namespace Shared.Infrastructure.Migrations
                     type = table.Column<int>(type: "integer", nullable: false),
                     is_required = table.Column<bool>(type: "boolean", nullable: false),
                     allow_comment = table.Column<bool>(type: "boolean", nullable: false),
-                    metadata = table.Column<string>(type: "jsonb", nullable: true),
+                    metadata = table.Column<List<SurveyQuestionMetadata>>(
+                        type: "json",
+                        nullable: true
+                    ),
                 },
                 constraints: table =>
                 {

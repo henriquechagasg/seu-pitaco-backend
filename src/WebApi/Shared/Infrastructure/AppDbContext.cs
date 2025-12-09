@@ -60,7 +60,7 @@ namespace WebApi.Shared.Infrastructure
 
                 entity.Property(e => e.Title).IsRequired().HasMaxLength(300);
 
-                entity.Property(e => e.Metadata).HasColumnType("jsonb");
+                entity.Property(e => e.Metadata).HasColumnType("json");
 
                 entity
                     .HasOne(q => q.Survey)

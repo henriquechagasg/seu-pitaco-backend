@@ -1,4 +1,5 @@
 using WebApi.Shared.Core.Enums;
+using WebApi.Surveys.Domain.Entities;
 
 namespace WebApi.Surveys.Application.Dtos;
 
@@ -10,5 +11,5 @@ public record SurveyQuestionDto(
     QuestionType Type,
     bool IsRequired,
     bool AllowComment,
-    string? Metadata
+    List<SurveyQuestionMetadata>? Metadata
 );

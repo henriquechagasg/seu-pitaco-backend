@@ -11,6 +11,8 @@ public class SurveyQuestion
     public QuestionType Type { get; set; }
     public bool IsRequired { get; set; }
     public bool AllowComment { get; set; }
-    public string? Metadata { get; set; }
+    public List<SurveyQuestionMetadata>? Metadata { get; set; }
     public Survey Survey { get; set; } = null!;
 }
+
+public record SurveyQuestionMetadata(string Value, string Type, string Name);
