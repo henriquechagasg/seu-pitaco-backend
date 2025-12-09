@@ -19,6 +19,15 @@ public class UpdateSurveyQuestionsCommandHandler(AppDbContext _context)
             return new Error("NotFoundError", "Pesquisa não encontrada.");
         }
 
+        var surveyAnswersCount = _context.SurveyAnswers.Count(sa => sa.SurveyId == survey.Id);
+        if (surveyAnswersCount > 0)
+        {
+            return new Error(
+                "ForbiddenAction",
+                "Não é possível atualizar uma pesquisa que contém respostas."
+            );
+        }
+
         survey.UpdateQuestions([.. command.Questions.Select(q => q.ToEntity())]);
 
         await _context.SaveChangesAsync();
