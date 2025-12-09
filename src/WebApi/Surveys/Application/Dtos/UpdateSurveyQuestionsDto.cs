@@ -10,3 +10,16 @@ public record UpdateSurveyQuestionDto(
     bool AllowComment,
     List<SurveyQuestionMetadata>? Metadata
 );
+
+public static class UpdateSurveyQuestionDtoMapping
+{
+    public static SurveyQuestion ToEntity(this UpdateSurveyQuestionDto dto) =>
+        new()
+        {
+            Title = dto.Title,
+            Type = dto.Type,
+            IsRequired = dto.IsRequired,
+            AllowComment = dto.AllowComment,
+            Metadata = dto.Metadata,
+        };
+}

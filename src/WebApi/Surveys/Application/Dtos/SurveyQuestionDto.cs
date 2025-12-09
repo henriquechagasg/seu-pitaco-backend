@@ -13,3 +13,31 @@ public record SurveyQuestionDto(
     bool AllowComment,
     List<SurveyQuestionMetadata>? Metadata
 );
+
+public static class SurveyQuestionDtoMapping
+{
+    public static SurveyQuestionDto ToDto(this SurveyQuestion entity) =>
+        new(
+            entity.Id,
+            entity.SurveyId,
+            entity.Order,
+            entity.Title,
+            entity.Type,
+            entity.IsRequired,
+            entity.AllowComment,
+            entity.Metadata
+        );
+
+    public static SurveyQuestion ToEntity(this SurveyQuestionDto dto) =>
+        new()
+        {
+            Id = dto.Id,
+            SurveyId = dto.SurveyId,
+            Order = dto.Order,
+            Title = dto.Title,
+            Type = dto.Type,
+            IsRequired = dto.IsRequired,
+            AllowComment = dto.AllowComment,
+            Metadata = dto.Metadata,
+        };
+}

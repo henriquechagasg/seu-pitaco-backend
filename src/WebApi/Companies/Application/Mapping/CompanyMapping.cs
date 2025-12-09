@@ -1,6 +1,6 @@
 using WebApi.Companies.Application.Dtos;
 using WebApi.Companies.Domain.Entities;
-using WebApi.Surveys.Application.Mappings;
+using WebApi.Surveys.Application.Dtos;
 
 namespace WebApi.Companies.Application.Mapping;
 
