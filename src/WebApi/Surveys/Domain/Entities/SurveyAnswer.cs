@@ -1,4 +1,3 @@
-using WebApi.Customers.Domain.Entities;
 using WebApi.Shared.Abstractions;
 using WebApi.Shared.Core.Enums;
 
@@ -19,7 +18,9 @@ public class SurveyAnswer
 
     public static Result<SurveyAnswer> Create(CreateSurveyAnswerInput input)
     {
-        if (input.Type != input.Question.Type)
+        var question = input.Question;
+
+        if (input.Type != question.Type)
         {
             return new Error(
                 "QuestionTypeMismatchError",
@@ -48,13 +49,30 @@ public class SurveyAnswer
                 }
                 break;
 
-            case QuestionType.SingleChoice:
             case QuestionType.OpenText:
                 if (string.IsNullOrEmpty(input.TextValue))
                 {
                     return new Error(
                         "MissingTextValue",
                         "Para o tipo de pergunta OpenText, a resposta de texto é obrigatória."
+                    );
+                }
+                break;
+
+            case QuestionType.SingleChoice:
+                if (string.IsNullOrEmpty(input.TextValue))
+                {
+                    return new Error(
+                        "MissingTextValue",
+                        "Para o tipo de pergunta OpenText, a resposta de texto é obrigatória."
+                    );
+                }
+
+                if (question.Options!.Select(o => o.Value).Contains(input.TextValue))
+                {
+                    return new Error(
+                        "InvalidOptionForQuestion",
+                        $"A opção escolhida é inválida para a pergunta {question.Id}"
                     );
                 }
                 break;

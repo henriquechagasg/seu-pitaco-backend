@@ -67,7 +67,7 @@ namespace WebApi.Shared.Infrastructure
 
                 entity.Property(e => e.Title).IsRequired().HasMaxLength(300);
 
-                entity.Property(e => e.Metadata).HasColumnType("json");
+                entity.Property(e => e.Options).HasColumnType("json");
             });
 
             builder.Entity<SurveySubmission>(entity =>

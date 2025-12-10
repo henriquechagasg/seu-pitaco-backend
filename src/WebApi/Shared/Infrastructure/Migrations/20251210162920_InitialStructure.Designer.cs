@@ -14,7 +14,7 @@ using WebApi.Surveys.Domain.Entities;
 namespace Shared.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251210144419_InitialStructure")]
+    [Migration("20251210162920_InitialStructure")]
     partial class InitialStructure
     {
         /// <inheritdoc />
@@ -216,17 +216,13 @@ namespace Shared.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<bool>("AllowComment")
-                        .HasColumnType("boolean")
-                        .HasColumnName("allow_comment");
-
                     b.Property<bool>("IsRequired")
                         .HasColumnType("boolean")
                         .HasColumnName("is_required");
 
-                    b.Property<List<SurveyQuestionMetadata>>("Metadata")
+                    b.Property<List<SurveyQuestionOption>>("Options")
                         .HasColumnType("json")
-                        .HasColumnName("metadata");
+                        .HasColumnName("options");
 
                     b.Property<int>("Order")
                         .HasColumnType("integer")
@@ -345,7 +341,7 @@ namespace Shared.Infrastructure.Migrations
                     b.HasOne("WebApi.Surveys.Domain.Entities.Survey", "Survey")
                         .WithMany("Submissions")
                         .HasForeignKey("SurveyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_survey_submissions_surveys_survey_id");
 

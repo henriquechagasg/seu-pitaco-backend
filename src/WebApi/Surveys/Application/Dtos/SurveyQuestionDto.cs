@@ -10,8 +10,7 @@ public record SurveyQuestionDto(
     string Title,
     QuestionType Type,
     bool IsRequired,
-    bool AllowComment,
-    List<SurveyQuestionMetadata>? Metadata
+    List<SurveyQuestionOption>? Options
 );
 
 public static class SurveyQuestionDtoMapping
@@ -24,8 +23,7 @@ public static class SurveyQuestionDtoMapping
             entity.Title,
             entity.Type,
             entity.IsRequired,
-            entity.AllowComment,
-            entity.Metadata
+            entity.Options
         );
 
     public static SurveyQuestion ToEntity(this SurveyQuestionDto dto) =>
@@ -37,7 +35,6 @@ public static class SurveyQuestionDtoMapping
             Title = dto.Title,
             Type = dto.Type,
             IsRequired = dto.IsRequired,
-            AllowComment = dto.AllowComment,
-            Metadata = dto.Metadata,
+            Options = dto.Options,
         };
 }

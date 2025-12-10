@@ -10,9 +10,8 @@ public class SurveyQuestion
     public int Order { get; set; }
     public QuestionType Type { get; set; }
     public bool IsRequired { get; set; }
-    public bool AllowComment { get; set; }
-    public List<SurveyQuestionMetadata>? Metadata { get; set; }
+    public List<SurveyQuestionOption>? Options { get; set; }
     public Survey Survey { get; set; } = null!;
 }
 
-public record SurveyQuestionMetadata(string Value, string Type, string Name);
+public record SurveyQuestionOption(string Value, string Type, string Name);

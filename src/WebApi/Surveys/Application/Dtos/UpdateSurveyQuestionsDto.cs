@@ -7,8 +7,7 @@ public record UpdateSurveyQuestionDto(
     string Title,
     QuestionType Type,
     bool IsRequired,
-    bool AllowComment,
-    List<SurveyQuestionMetadata>? Metadata
+    List<SurveyQuestionOption>? Options
 );
 
 public static class UpdateSurveyQuestionDtoMapping
@@ -19,7 +18,6 @@ public static class UpdateSurveyQuestionDtoMapping
             Title = dto.Title,
             Type = dto.Type,
             IsRequired = dto.IsRequired,
-            AllowComment = dto.AllowComment,
-            Metadata = dto.Metadata,
+            Options = dto.Options,
         };
 }
