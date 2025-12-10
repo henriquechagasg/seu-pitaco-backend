@@ -21,31 +21,21 @@ public class CreateSurveySubmissionCommandHandler(AppDbContext _context)
 
         List<SurveyAnswer> answers = [];
 
-        foreach (var a in command.Answers)
+        foreach (var answerDto in command.Answers)
         {
-            var question = survey.Questions.FirstOrDefault(q => q.Id == a.QuestionId);
-
-            if (question is null)
-                return new Error("NotFoundError", "Pergunta da pesquisa não encontrada.");
-
-            var createAnswerInput = new CreateSurveyAnswerInput(
-                question,
-                a.Type,
-                a.NumericValue,
-                a.TextValue,
-                a.ExtraComment
-            );
-
-            var answerResult = SurveyAnswer.Create(createAnswerInput);
+            var answerResult = CreateAnswer(survey, answerDto);
 
             if (answerResult.IsFailure)
+            {
                 return answerResult.Error;
+            }
 
             answers.Add(answerResult.Value);
         }
 
-        var input = new CreateSurveySubmissionInput(command.SurveyId, answers);
-        var submission = SurveySubmission.Create(input);
+        var submission = SurveySubmission.Create(
+            new CreateSurveySubmissionInput(command.SurveyId, answers)
+        );
 
         if (submission.IsFailure)
         {
@@ -53,9 +43,26 @@ public class CreateSurveySubmissionCommandHandler(AppDbContext _context)
         }
 
         _context.SurveySubmissions.Add(submission.Value);
-
         await _context.SaveChangesAsync();
 
         return submission.Value.ToDto();
+    }
+
+    private static Result<SurveyAnswer> CreateAnswer(Survey survey, CreateSurveyAnswerDto dto)
+    {
+        var question = survey.Questions.FirstOrDefault(q => q.Id == dto.QuestionId);
+
+        if (question is null)
+            return new Error("NotFoundError", "Pergunta da pesquisa não encontrada.");
+
+        return SurveyAnswer.Create(
+            new CreateSurveyAnswerInput(
+                question,
+                dto.Type,
+                dto.NumericValue,
+                dto.TextValue,
+                dto.ExtraComment
+            )
+        );
     }
 }
