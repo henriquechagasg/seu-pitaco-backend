@@ -14,7 +14,7 @@ using WebApi.Surveys.Domain.Entities;
 namespace Shared.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251210124105_InitialStructure")]
+    [Migration("20251210144419_InitialStructure")]
     partial class InitialStructure
     {
         /// <inheritdoc />
@@ -312,14 +312,14 @@ namespace Shared.Infrastructure.Migrations
                     b.HasOne("WebApi.Surveys.Domain.Entities.SurveyQuestion", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_survey_answers_survey_questions_question_id");
 
                     b.HasOne("WebApi.Surveys.Domain.Entities.SurveySubmission", "Submission")
                         .WithMany("Answers")
                         .HasForeignKey("SubmissionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_survey_answers_survey_submissions_submission_id");
 
@@ -343,7 +343,7 @@ namespace Shared.Infrastructure.Migrations
             modelBuilder.Entity("WebApi.Surveys.Domain.Entities.SurveySubmission", b =>
                 {
                     b.HasOne("WebApi.Surveys.Domain.Entities.Survey", "Survey")
-                        .WithMany()
+                        .WithMany("Submissions")
                         .HasForeignKey("SurveyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -362,6 +362,8 @@ namespace Shared.Infrastructure.Migrations
             modelBuilder.Entity("WebApi.Surveys.Domain.Entities.Survey", b =>
                 {
                     b.Navigation("Questions");
+
+                    b.Navigation("Submissions");
                 });
 
             modelBuilder.Entity("WebApi.Surveys.Domain.Entities.SurveySubmission", b =>

@@ -14,90 +14,82 @@ namespace WebApi.Shared.Infrastructure
         public DbSet<SurveySubmission> SurveySubmissions { get; set; }
         public DbSet<SurveyAnswer> SurveyAnswers { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.Entity<Company>(entity =>
+            builder.Entity<Company>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(150);
 
                 entity.Property(e => e.Slug).IsRequired().HasMaxLength(50);
                 entity.HasIndex(e => e.Slug).IsUnique();
-            });
-
-            modelBuilder.Entity<Customer>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Name).HasMaxLength(150);
-                entity.Property(e => e.Contact).HasMaxLength(100);
 
                 entity
-                    .HasOne(c => c.Company)
-                    .WithMany(co => co.Customers)
+                    .HasMany(c => c.Surveys)
+                    .WithOne(s => s.Company)
+                    .HasForeignKey(s => s.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity
+                    .HasMany(co => co.Customers)
+                    .WithOne(c => c.Company)
                     .HasForeignKey(c => c.CompanyId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<Survey>(entity =>
+            builder.Entity<Customer>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).HasMaxLength(150);
+                entity.Property(e => e.Contact).HasMaxLength(100);
+            });
+
+            builder.Entity<Survey>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Title).IsRequired().HasMaxLength(100);
 
                 entity
-                    .HasOne(s => s.Company)
-                    .WithMany(c => c.Surveys)
-                    .HasForeignKey(s => s.CompanyId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasMany(s => s.Submissions)
+                    .WithOne(sub => sub.Survey)
+                    .HasForeignKey(sub => sub.SurveyId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 entity
-                    .HasMany(q => q.Questions)
-                    .WithOne(s => s.Survey)
+                    .HasMany(s => s.Questions)
+                    .WithOne(q => q.Survey)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<SurveyQuestion>(entity =>
+            builder.Entity<SurveyQuestion>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Title).IsRequired().HasMaxLength(300);
 
                 entity.Property(e => e.Metadata).HasColumnType("json");
-
-                entity
-                    .HasOne(q => q.Survey)
-                    .WithMany(s => s.Questions)
-                    .HasForeignKey(q => q.SurveyId)
-                    .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<SurveySubmission>(entity =>
+            builder.Entity<SurveySubmission>(entity =>
             {
                 entity.HasKey(s => s.Id);
-
-                entity.HasOne(s => s.Survey).WithMany().HasForeignKey(s => s.SurveyId).IsRequired();
 
                 entity.HasIndex(s => new { s.SurveyId, s.CreatedAt });
 
                 entity.Property(s => s.CreatedAt).IsRequired();
+
+                entity
+                    .HasMany(s => s.Answers)
+                    .WithOne(sa => sa.Submission)
+                    .HasForeignKey(sa => sa.SubmissionId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<SurveyAnswer>(entity =>
+            builder.Entity<SurveyAnswer>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
                 entity.HasIndex(a => new { a.SubmissionId, a.CreatedAt });
-
-                entity
-                    .HasOne(a => a.Submission)
-                    .WithMany(s => s.Answers)
-                    .HasForeignKey(a => a.SubmissionId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity
-                    .HasOne(a => a.Question)
-                    .WithMany()
-                    .HasForeignKey(a => a.QuestionId)
-                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

@@ -13,6 +13,8 @@ public class Survey
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public Company Company { get; set; } = null!;
+
+    public ICollection<SurveySubmission> Submissions { get; set; } = [];
     public ICollection<SurveyQuestion> Questions { get; set; } = [];
 
     public void UpdateQuestions(List<SurveyQuestion> questions)
