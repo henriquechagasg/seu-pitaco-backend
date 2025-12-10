@@ -18,11 +18,11 @@ public class UpdateSurveyQuestionsCommandHandler(AppDbContext _context)
             return new Error("NotFoundError", "Pesquisa não encontrada.");
         }
 
-        var surveySubmission = _context.SurveySubmissions.FirstOrDefaultAsync(sa =>
+        var surveySubmission = await _context.SurveySubmissions.FirstOrDefaultAsync(sa =>
             sa.SurveyId == survey.Id
         );
 
-        if (surveySubmission != null)
+        if (surveySubmission is not null)
         {
             return new Error(
                 "ForbiddenAction",

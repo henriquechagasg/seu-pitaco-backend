@@ -76,12 +76,6 @@ namespace WebApi.Shared.Infrastructure
 
                 entity.HasOne(s => s.Survey).WithMany().HasForeignKey(s => s.SurveyId).IsRequired();
 
-                entity
-                    .HasMany(s => s.Answers)
-                    .WithOne(a => a.Submission)
-                    .HasForeignKey(a => a.SubmissionId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
                 entity.HasIndex(s => new { s.SurveyId, s.CreatedAt });
 
                 entity.Property(s => s.CreatedAt).IsRequired();
@@ -95,7 +89,7 @@ namespace WebApi.Shared.Infrastructure
 
                 entity
                     .HasOne(a => a.Submission)
-                    .WithMany()
+                    .WithMany(s => s.Answers)
                     .HasForeignKey(a => a.SubmissionId)
                     .OnDelete(DeleteBehavior.Restrict);
 

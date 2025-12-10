@@ -5,6 +5,5 @@ public enum QuestionType
     CSAT,
     NPS,
     SingleChoice,
-    MultipleChoice,
     OpenText,
 }

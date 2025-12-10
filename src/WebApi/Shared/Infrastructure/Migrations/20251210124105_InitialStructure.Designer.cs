@@ -14,7 +14,7 @@ using WebApi.Surveys.Domain.Entities;
 namespace Shared.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251209115727_InitialStructure")]
+    [Migration("20251210124105_InitialStructure")]
     partial class InitialStructure
     {
         /// <inheritdoc />
@@ -189,22 +189,19 @@ namespace Shared.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("submission_id");
 
-                    b.Property<Guid?>("SurveySubmissionId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("survey_submission_id");
-
                     b.Property<string>("TextValue")
                         .HasColumnType("text")
                         .HasColumnName("text_value");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnName("type");
 
                     b.HasKey("Id")
                         .HasName("pk_survey_answers");
 
                     b.HasIndex("QuestionId")
                         .HasDatabaseName("ix_survey_answers_question_id");
-
-                    b.HasIndex("SurveySubmissionId")
-                        .HasDatabaseName("ix_survey_answers_survey_submission_id");
 
                     b.HasIndex("SubmissionId", "CreatedAt")
                         .HasDatabaseName("ix_survey_answers_submission_id_created_at");
@@ -320,16 +317,11 @@ namespace Shared.Infrastructure.Migrations
                         .HasConstraintName("fk_survey_answers_survey_questions_question_id");
 
                     b.HasOne("WebApi.Surveys.Domain.Entities.SurveySubmission", "Submission")
-                        .WithMany()
+                        .WithMany("Answers")
                         .HasForeignKey("SubmissionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_survey_answers_survey_submissions_submission_id");
-
-                    b.HasOne("WebApi.Surveys.Domain.Entities.SurveySubmission", null)
-                        .WithMany("Answers")
-                        .HasForeignKey("SurveySubmissionId")
-                        .HasConstraintName("fk_survey_answers_survey_submissions_survey_submission_id");
 
                     b.Navigation("Question");
 
