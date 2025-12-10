@@ -11,6 +11,7 @@ public class UpdateSurveyQuestionsCommandHandler(AppDbContext _context)
     {
         var survey = await _context
             .Surveys.Include(s => s.Questions)
+            .Include(s => s.Submissions)
             .FirstOrDefaultAsync(s => s.Id == command.SurveyId);
 
         if (survey == null)
@@ -18,19 +19,12 @@ public class UpdateSurveyQuestionsCommandHandler(AppDbContext _context)
             return new Error("NotFoundError", "Pesquisa não encontrada.");
         }
 
-        var surveySubmission = await _context.SurveySubmissions.FirstOrDefaultAsync(sa =>
-            sa.SurveyId == survey.Id
-        );
+        var result = survey.UpdateQuestions([.. command.Questions.Select(q => q.ToEntity())]);
 
-        if (surveySubmission is not null)
+        if (result.IsFailure)
         {
-            return new Error(
-                "ForbiddenAction",
-                "Não é possível atualizar uma pesquisa que contém respostas."
-            );
+            return result.Error;
         }
-
-        survey.UpdateQuestions([.. command.Questions.Select(q => q.ToEntity())]);
 
         await _context.SaveChangesAsync();
 
