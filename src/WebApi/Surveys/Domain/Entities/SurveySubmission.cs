@@ -1,4 +1,5 @@
 using WebApi.Shared.Abstractions;
+using WebApi.Surveys.Domain.Errors;
 
 namespace WebApi.Surveys.Domain.Entities;
 
@@ -17,10 +18,7 @@ public class SurveySubmission
 
         if (answers.Count == 0)
         {
-            return new Error(
-                "SubmissionAnswersEmptyError",
-                "Por favor, envie pelo menos uma resposta."
-            );
+            return SurveySubmissionErrors.CreateWithEmptyAnswers;
         }
 
         return new SurveySubmission { SurveyId = input.SurveyId, Answers = answers };
