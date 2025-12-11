@@ -2,12 +2,12 @@ using WebApi.Surveys.Infra.Database;
 
 namespace WebApi.Surveys.Domain.Entities;
 
-public class SurveyBuilder
+public class DynamoDbSurveyBuilder
 {
     private readonly DynamoDbSurvey _survey;
     private readonly Random random = Random.Shared;
 
-    public SurveyBuilder()
+    public DynamoDbSurveyBuilder()
     {
         _survey = new DynamoDbSurvey
         {
@@ -20,25 +20,31 @@ public class SurveyBuilder
         };
     }
 
-    public SurveyBuilder WithNpsScore(int score)
+    public DynamoDbSurveyBuilder WithNpsScore(int score)
     {
         _survey.NpsScore = score;
         return this;
     }
 
-    public SurveyBuilder WithPromoterScore()
+    public DynamoDbSurveyBuilder WithPromoterScore()
     {
         _survey.NpsScore = random.Next(9, 10);
         return this;
     }
 
-    public SurveyBuilder WithNeutralScore()
+    public DynamoDbSurveyBuilder WithNeutralScore()
     {
         _survey.NpsScore = random.Next(7, 8);
         return this;
     }
 
-    public SurveyBuilder WithDetractorScore()
+    public DynamoDbSurveyBuilder WithDetractorScore()
+    {
+        _survey.NpsScore = random.Next(0, 6);
+        return this;
+    }
+
+    public DynamoDbSurveyBuilder WithSubmission()
     {
         _survey.NpsScore = random.Next(0, 6);
         return this;

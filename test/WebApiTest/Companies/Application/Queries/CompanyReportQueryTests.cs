@@ -23,7 +23,7 @@ namespace WebApiTest.Companies.Application.Queries
             var expectedCount = 10;
             var surveys = Enumerable
                 .Range(1, expectedCount)
-                .Select(_ => new SurveyBuilder().WithPromoterScore().Build())
+                .Select(_ => new DynamoDbSurveyBuilder().WithPromoterScore().Build())
                 .ToList();
             foreach (var survey in surveys)
             {
@@ -41,7 +41,7 @@ namespace WebApiTest.Companies.Application.Queries
         {
             var surveys = Enumerable
                 .Range(1, 10)
-                .Select(_ => new SurveyBuilder().WithPromoterScore().Build())
+                .Select(_ => new DynamoDbSurveyBuilder().WithPromoterScore().Build())
                 .ToList();
             foreach (var survey in surveys)
             {
@@ -60,7 +60,7 @@ namespace WebApiTest.Companies.Application.Queries
             var expectedCount = 10;
             var surveys = Enumerable
                 .Range(1, expectedCount)
-                .Select(_ => new SurveyBuilder().WithDetractorScore().Build())
+                .Select(_ => new DynamoDbSurveyBuilder().WithDetractorScore().Build())
                 .ToList();
             foreach (var survey in surveys)
             {
@@ -79,19 +79,19 @@ namespace WebApiTest.Companies.Application.Queries
             var expectedPromotersCount = random.Next(1, 10);
             var promotersSurvey = Enumerable
                 .Range(1, expectedPromotersCount)
-                .Select(_ => new SurveyBuilder().WithPromoterScore().Build())
+                .Select(_ => new DynamoDbSurveyBuilder().WithPromoterScore().Build())
                 .ToList();
 
             var expectedNeutralsCount = random.Next(1, 10);
             var neutralsSurvey = Enumerable
                 .Range(1, expectedNeutralsCount)
-                .Select(_ => new SurveyBuilder().WithNeutralScore().Build())
+                .Select(_ => new DynamoDbSurveyBuilder().WithNeutralScore().Build())
                 .ToList();
 
             var expectedDetractorsCount = random.Next(1, 10);
             var detractorsSurvey = Enumerable
                 .Range(1, expectedDetractorsCount)
-                .Select(_ => new SurveyBuilder().WithDetractorScore().Build())
+                .Select(_ => new DynamoDbSurveyBuilder().WithDetractorScore().Build())
                 .ToList();
 
             var surveys = promotersSurvey.Concat(neutralsSurvey).Concat(detractorsSurvey).ToList();
@@ -115,13 +115,13 @@ namespace WebApiTest.Companies.Application.Queries
             var expectedFiveRatingCount = random.Next(1, 10);
             var fiveRatingSurveys = Enumerable
                 .Range(1, expectedFiveRatingCount)
-                .Select(_ => new SurveyBuilder().WithNpsScore(5).Build())
+                .Select(_ => new DynamoDbSurveyBuilder().WithNpsScore(5).Build())
                 .ToList();
 
             var expectedTenRatingCount = random.Next(1, 10);
             var tenRatingSurveys = Enumerable
                 .Range(1, expectedTenRatingCount)
-                .Select(_ => new SurveyBuilder().WithNpsScore(10).Build())
+                .Select(_ => new DynamoDbSurveyBuilder().WithNpsScore(10).Build())
                 .ToList();
 
             var surveys = fiveRatingSurveys.Concat(tenRatingSurveys).ToList();
