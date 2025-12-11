@@ -14,4 +14,4 @@ public class SurveyQuestion
     public Survey Survey { get; set; } = null!;
 }
 
-public record SurveyQuestionOption(string Value, string Type, string Name);
+public record SurveyQuestionOption(string Value, string Type, string? Name);

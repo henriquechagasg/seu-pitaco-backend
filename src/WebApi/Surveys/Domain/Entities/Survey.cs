@@ -1,6 +1,7 @@
 using WebApi.Companies.Domain.Entities;
 using WebApi.Shared.Abstractions;
 using WebApi.Shared.Core.Enums;
+using WebApi.Surveys.Domain.Errors;
 
 namespace WebApi.Surveys.Domain.Entities;
 
@@ -23,10 +24,7 @@ public class Survey
     {
         if (Submissions.Count > 0)
         {
-            return new Error(
-                "ForbiddenAction",
-                "Não é possível atualizar uma pesquisa que contém respostas."
-            );
+            return SurveyErrors.ActionForbidden("A pesquisa contém respostas.");
         }
 
         int i = 0;
@@ -34,10 +32,7 @@ public class Survey
         {
             if (q.Type == QuestionType.SingleChoice && q.Options is null)
             {
-                return new Error(
-                    "OptionsCannotBeEmptyForSingleChoice",
-                    "As opções não podem estar vazias para perguntas do tipo escolha."
-                );
+                return SurveyErrors.EmptyOptions(q.Id.ToString());
             }
 
             q.Order = i++;
