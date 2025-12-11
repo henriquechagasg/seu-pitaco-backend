@@ -1,5 +1,6 @@
 using WebApi.Shared.Abstractions;
 using WebApi.Shared.Core.Enums;
+using WebApi.Surveys.Domain.Errors;
 
 namespace WebApi.Surveys.Domain.Entities;
 
@@ -22,18 +23,12 @@ public class SurveyAnswer
 
         if (input.Type != question.Type)
         {
-            return new Error(
-                "QuestionTypeMismatchError",
-                "Tipo da resposta não equivale ao tipo pergunta."
-            );
+            return SurveyAnswerErrors.AnswerTypeMismatch;
         }
 
         if (input.NumericValue.HasValue && !string.IsNullOrEmpty(input.TextValue))
         {
-            return new Error(
-                "InvalidAnswerInput",
-                "Apenas um campo de valor (Numérico ou Texto) deve ser preenchido para a resposta principal."
-            );
+            return SurveyAnswerErrors.InvalidAnswerInput;
         }
 
         switch (input.Type)
@@ -41,47 +36,27 @@ public class SurveyAnswer
             case QuestionType.CSAT:
             case QuestionType.NPS:
                 if (!input.NumericValue.HasValue)
-                {
-                    return new Error(
-                        "MissingNumericValue",
-                        $"Para o tipo de pergunta {input.Type}, o valor numérico (nota) é obrigatório."
-                    );
-                }
+                    return SurveyAnswerErrors.MissingNumericValue(input.Type);
+
                 break;
 
             case QuestionType.OpenText:
                 if (string.IsNullOrEmpty(input.TextValue))
-                {
-                    return new Error(
-                        "MissingTextValue",
-                        "Para o tipo de pergunta OpenText, a resposta de texto é obrigatória."
-                    );
-                }
+                    return SurveyAnswerErrors.MissingTextValue(input.Type);
+
                 break;
 
             case QuestionType.SingleChoice:
                 if (string.IsNullOrEmpty(input.TextValue))
-                {
-                    return new Error(
-                        "MissingTextValue",
-                        "Para o tipo de pergunta OpenText, a resposta de texto é obrigatória."
-                    );
-                }
+                    return SurveyAnswerErrors.MissingTextValue(input.Type);
 
-                if (question.Options!.Select(o => o.Value).Contains(input.TextValue))
-                {
-                    return new Error(
-                        "InvalidOptionForQuestion",
-                        $"A opção escolhida é inválida para a pergunta {question.Id}"
-                    );
-                }
+                if (!question.Options!.Select(o => o.Value).Contains(input.TextValue))
+                    return SurveyAnswerErrors.InvalidOptionForQuestion(question.Id);
+
                 break;
 
             default:
-                return new Error(
-                    "InvalidQuestionType",
-                    $"Tipo de pergunta '{input.Type}' desconhecido."
-                );
+                return SurveyAnswerErrors.InvalidQuestionType(input.Type);
         }
 
         return new SurveyAnswer
