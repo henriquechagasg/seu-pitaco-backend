@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Shared.Abstractions;
+using WebApi.Shared.Core.Enums;
 using WebApi.Shared.Infrastructure;
 using WebApi.Surveys.Application.Dtos;
 using WebApi.Surveys.Domain.Entities;
@@ -54,6 +55,9 @@ public class CreateSurveySubmissionCommandHandler(AppDbContext _context)
 
         if (question is null)
             return new Error("NotFoundError", "Pergunta da pesquisa não encontrada.");
+
+        if (!Enum.IsDefined(typeof(QuestionType), dto.Type))
+            return new Error("ValidationError", "Tipo de pergunta inválido.");
 
         return SurveyAnswer.Create(
             new CreateSurveyAnswerInput(
