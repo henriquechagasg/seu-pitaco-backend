@@ -58,6 +58,42 @@ namespace WebApiTest.Surveys.Domain.Entities
         }
 
         [Fact]
+        public void Create_ShouldReturnNumericValueOutOfRange_WhenNPSIsOutOfRAnge()
+        {
+            // Arrange
+            var question = new SurveyQuestion { Id = Guid.NewGuid(), Type = QuestionType.NPS };
+            var input = new CreateSurveyAnswerInput(question, QuestionType.NPS, 11, null, null);
+
+            // Act
+            var result = SurveyAnswer.Create(input);
+
+            // Assert
+            Assert.True(result.IsFailure);
+            Assert.Equal(
+                result.Error,
+                SurveyAnswerErrors.NumericValueOutOfRange(QuestionType.NPS, min: 0, max: 10)
+            );
+        }
+
+        [Fact]
+        public void Create_ShouldReturnNumericValueOutOfRange_WhenCSATIsOutOfRAnge()
+        {
+            // Arrange
+            var question = new SurveyQuestion { Id = Guid.NewGuid(), Type = QuestionType.CSAT };
+            var input = new CreateSurveyAnswerInput(question, QuestionType.CSAT, 6, null, null);
+
+            // Act
+            var result = SurveyAnswer.Create(input);
+
+            // Assert
+            Assert.True(result.IsFailure);
+            Assert.Equal(
+                result.Error,
+                SurveyAnswerErrors.NumericValueOutOfRange(QuestionType.CSAT, min: 1, max: 5)
+            );
+        }
+
+        [Fact]
         public void Create_ShouldSucceed_WhenCSATIsValid()
         {
             // Arrange

@@ -4,6 +4,14 @@ using WebApi.Surveys.Domain.Errors;
 
 namespace WebApi.Surveys.Domain.Entities;
 
+public record CreateSurveyAnswerInput(
+    SurveyQuestion Question,
+    QuestionType Type,
+    int? NumericValue,
+    string? TextValue,
+    string? ExtraComment
+);
+
 public class SurveyAnswer
 {
     public Guid Id { get; set; }
@@ -34,9 +42,20 @@ public class SurveyAnswer
         switch (input.Type)
         {
             case QuestionType.CSAT:
+                if (!input.NumericValue.HasValue)
+                    return SurveyAnswerErrors.MissingNumericValue(input.Type);
+
+                if (input.NumericValue < 1 || input.NumericValue > 5)
+                    return SurveyAnswerErrors.NumericValueOutOfRange(input.Type, min: 1, max: 5);
+
+                break;
+
             case QuestionType.NPS:
                 if (!input.NumericValue.HasValue)
                     return SurveyAnswerErrors.MissingNumericValue(input.Type);
+
+                if (input.NumericValue < 0 || input.NumericValue > 10)
+                    return SurveyAnswerErrors.NumericValueOutOfRange(input.Type, min: 0, max: 10);
 
                 break;
 
@@ -69,11 +88,3 @@ public class SurveyAnswer
         };
     }
 }
-
-public record CreateSurveyAnswerInput(
-    SurveyQuestion Question,
-    QuestionType Type,
-    int? NumericValue,
-    string? TextValue,
-    string? ExtraComment
-);

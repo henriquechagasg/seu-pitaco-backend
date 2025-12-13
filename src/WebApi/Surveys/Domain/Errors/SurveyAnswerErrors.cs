@@ -27,6 +27,12 @@ namespace WebApi.Surveys.Domain.Errors
                 $"Para o tipo de pergunta {type}, o valor numérico (nota) é obrigatório e não pode estar vazio."
             );
 
+        public static Error NumericValueOutOfRange(QuestionType type, int min, int max) =>
+            new(
+                "NumericValueOutOfRange",
+                $"Valor inválido para '{type}'. Intervalo permitido: {min} a {max}."
+            );
+
         public static Error MissingTextValue(QuestionType type) =>
             new(
                 "SurveyAnswerErrors.MissingTextValue",
