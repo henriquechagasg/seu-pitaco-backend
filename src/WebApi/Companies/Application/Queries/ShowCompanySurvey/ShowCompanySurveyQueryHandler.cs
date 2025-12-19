@@ -13,7 +13,7 @@ public class ShowCompanySurveyQueryHandler(AppDbContext _context)
     {
         var company = await _context
             .Companies.Include(c => c.Surveys.Where(s => s.IsDefault))
-                .ThenInclude(s => s.Questions)
+                .ThenInclude(s => s.Questions.OrderBy(q => q.Order))
             .FirstOrDefaultAsync(c => c.Slug == query.Slug);
 
         if (company == null)
