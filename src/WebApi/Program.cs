@@ -47,6 +47,14 @@ builder.Services.AddScoped<UpdateSurveyQuestionsCommandHandler>();
 builder.Services.AddScoped<CreateSurveySubmissionCommandHandler>();
 builder.Services.AddScoped<ShowCompanySurveyQueryHandler>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "Frontend",
+        p => p.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader()
+    );
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -56,6 +64,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Frontend");
 
 app.MapCompaniesEndpoints();
 app.MapSurveysEndpoints();
