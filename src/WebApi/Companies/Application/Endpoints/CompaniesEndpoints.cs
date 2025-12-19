@@ -4,6 +4,7 @@ using WebApi.Companies.Application.Dtos;
 using WebApi.Companies.Application.Queries.ListCompanies;
 using WebApi.Companies.Application.Queries.ShowCompany;
 using WebApi.Companies.Application.Queries.ShowCompanyReport;
+using WebApi.Companies.Application.Queries.ShowCompanySurvey;
 using WebApi.Shared.Abstractions;
 
 namespace WebApi.Companies.Application.Endpoints
@@ -19,6 +20,11 @@ namespace WebApi.Companies.Application.Endpoints
             group.MapGet("/{id}", ShowCompany).WithName("ShowCompany").WithOpenApi();
 
             group.MapPost("/", CreateCompany).WithName("CreateCompany").WithOpenApi();
+
+            group
+                .MapGet("/{slug}/survey", ShowCompanySurvey)
+                .WithName("ShowCompanySurvey")
+                .WithOpenApi();
 
             group.MapGet("/report", ShowCompanyReport).WithName("ShowCompanyReport").WithOpenApi();
         }
@@ -64,6 +70,23 @@ namespace WebApi.Companies.Application.Endpoints
         )
         {
             var query = new ShowCompanyQuery { Id = Id };
+
+            var result = await handler.Handle(query);
+
+            if (result.IsFailure)
+            {
+                return TypedResults.BadRequest(result.Error);
+            }
+
+            var value = result.Value;
+            return TypedResults.Ok(value);
+        }
+
+        public static async Task<
+            Results<Ok<CompanySurveyDto>, BadRequest<Error>>
+        > ShowCompanySurvey(string Slug, ShowCompanySurveyQueryHandler handler)
+        {
+            var query = new ShowCompanySurveyQuery { Slug = Slug };
 
             var result = await handler.Handle(query);
 

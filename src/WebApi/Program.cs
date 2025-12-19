@@ -7,6 +7,7 @@ using WebApi.Companies.Application.Endpoints;
 using WebApi.Companies.Application.Queries.ListCompanies;
 using WebApi.Companies.Application.Queries.ShowCompany;
 using WebApi.Companies.Application.Queries.ShowCompanyReport;
+using WebApi.Companies.Application.Queries.ShowCompanySurvey;
 using WebApi.Shared.Infrastructure;
 using WebApi.Surveys.Application.Commands.CreateSurveySubmission;
 using WebApi.Surveys.Application.Commands.UpdateSurveyQuestions;
@@ -44,6 +45,7 @@ builder.Services.AddScoped<ListCompaniesQueryHandler>();
 builder.Services.AddScoped<ShowCompanyQueryHandler>();
 builder.Services.AddScoped<UpdateSurveyQuestionsCommandHandler>();
 builder.Services.AddScoped<CreateSurveySubmissionCommandHandler>();
+builder.Services.AddScoped<ShowCompanySurveyQueryHandler>();
 
 var app = builder.Build();
 
