@@ -11,7 +11,14 @@ namespace WebApiTest.Surveys.Domain.Entities
         {
             // Arrange
             var question = new SurveyQuestion { Id = Guid.NewGuid(), Type = QuestionType.NPS };
-            var input = new CreateSurveyAnswerInput(question, QuestionType.CSAT, 5, null, null);
+            var input = new CreateSurveyAnswerInput(
+                question,
+                QuestionType.CSAT,
+                5,
+                null,
+                null,
+                null
+            );
 
             // Act
             var result = SurveyAnswer.Create(input);
@@ -26,7 +33,14 @@ namespace WebApiTest.Surveys.Domain.Entities
         {
             // Arrange
             var question = new SurveyQuestion { Id = Guid.NewGuid(), Type = QuestionType.OpenText };
-            CreateSurveyAnswerInput input = new(question, QuestionType.OpenText, 5, "Answer", null);
+            CreateSurveyAnswerInput input = new(
+                question,
+                QuestionType.OpenText,
+                5,
+                "Answer",
+                null,
+                null
+            );
 
             // Act
             var result = SurveyAnswer.Create(input);
@@ -46,7 +60,8 @@ namespace WebApiTest.Surveys.Domain.Entities
                 QuestionType.NPS,
                 null,
                 "Answer",
-                "Comment"
+                "Comment",
+                null
             );
 
             // Act
@@ -62,7 +77,14 @@ namespace WebApiTest.Surveys.Domain.Entities
         {
             // Arrange
             var question = new SurveyQuestion { Id = Guid.NewGuid(), Type = QuestionType.NPS };
-            var input = new CreateSurveyAnswerInput(question, QuestionType.NPS, 11, null, null);
+            var input = new CreateSurveyAnswerInput(
+                question,
+                QuestionType.NPS,
+                11,
+                null,
+                null,
+                null
+            );
 
             // Act
             var result = SurveyAnswer.Create(input);
@@ -80,7 +102,14 @@ namespace WebApiTest.Surveys.Domain.Entities
         {
             // Arrange
             var question = new SurveyQuestion { Id = Guid.NewGuid(), Type = QuestionType.CSAT };
-            var input = new CreateSurveyAnswerInput(question, QuestionType.CSAT, 6, null, null);
+            var input = new CreateSurveyAnswerInput(
+                question,
+                QuestionType.CSAT,
+                6,
+                null,
+                null,
+                null
+            );
 
             // Act
             var result = SurveyAnswer.Create(input);
@@ -98,7 +127,14 @@ namespace WebApiTest.Surveys.Domain.Entities
         {
             // Arrange
             var question = new SurveyQuestion { Id = Guid.NewGuid(), Type = QuestionType.CSAT };
-            var input = new CreateSurveyAnswerInput(question, QuestionType.CSAT, 5, null, null);
+            var input = new CreateSurveyAnswerInput(
+                question,
+                QuestionType.CSAT,
+                5,
+                null,
+                null,
+                null
+            );
 
             // Act
             var result = SurveyAnswer.Create(input);
@@ -120,6 +156,7 @@ namespace WebApiTest.Surveys.Domain.Entities
                 QuestionType.OpenText,
                 null,
                 string.Empty,
+                null,
                 null
             );
 
@@ -143,6 +180,7 @@ namespace WebApiTest.Surveys.Domain.Entities
                 QuestionType.OpenText,
                 null,
                 expectedText,
+                null,
                 null
             );
 
@@ -155,8 +193,10 @@ namespace WebApiTest.Surveys.Domain.Entities
             Assert.Equal(QuestionType.OpenText, result.Value.Type);
         }
 
-        [Fact]
-        public void Create_ShouldReturnError_WhenChosenOptionIsNotInOptionsList()
+        [Theory]
+        [InlineData(QuestionType.SingleChoice)]
+        [InlineData(QuestionType.Attendant)]
+        public void Create_ShouldReturnError_WhenChosenOptionIsNotInOptionsList(QuestionType type)
         {
             // Arrange
             List<SurveyQuestionOption> validOptions =
@@ -167,18 +207,12 @@ namespace WebApiTest.Surveys.Domain.Entities
             var question = new SurveyQuestion
             {
                 Id = Guid.NewGuid(),
-                Type = QuestionType.SingleChoice,
+                Type = type,
                 Options = validOptions,
             };
 
             var expectedText = "C";
-            var input = new CreateSurveyAnswerInput(
-                question,
-                QuestionType.SingleChoice,
-                null,
-                expectedText,
-                null
-            );
+            var input = new CreateSurveyAnswerInput(question, type, null, expectedText, null, null);
 
             // Act
             var result = SurveyAnswer.Create(input);
@@ -188,8 +222,10 @@ namespace WebApiTest.Surveys.Domain.Entities
             Assert.Equal(result.Error, SurveyAnswerErrors.InvalidOptionForQuestion(question.Id));
         }
 
-        [Fact]
-        public void Create_ShouldSucceed_WhenChosenOptionIsInOptionsList()
+        [Theory]
+        [InlineData(QuestionType.SingleChoice)]
+        [InlineData(QuestionType.Attendant)]
+        public void Create_ShouldSucceed_WhenChosenOptionIsInOptionsList(QuestionType type)
         {
             // Arrange
             List<SurveyQuestionOption> validOptions =
@@ -200,15 +236,16 @@ namespace WebApiTest.Surveys.Domain.Entities
             var question = new SurveyQuestion
             {
                 Id = Guid.NewGuid(),
-                Type = QuestionType.SingleChoice,
+                Type = type,
                 Options = validOptions,
             };
             var expectedOption = "A";
             var input = new CreateSurveyAnswerInput(
                 question,
-                QuestionType.SingleChoice,
+                type,
                 null,
                 expectedOption,
+                null,
                 null
             );
 
@@ -218,7 +255,7 @@ namespace WebApiTest.Surveys.Domain.Entities
             // Assert
             Assert.True(result.IsSuccess);
             Assert.Equal(expectedOption, result.Value.TextValue);
-            Assert.Equal(QuestionType.SingleChoice, result.Value.Type);
+            Assert.Equal(type, result.Value.Type);
         }
     }
 }

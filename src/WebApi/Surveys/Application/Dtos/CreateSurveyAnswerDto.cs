@@ -9,7 +9,8 @@ public record CreateSurveyAnswerDto(
     QuestionType Type,
     int? NumericValue,
     string? TextValue,
-    string? ExtraComment
+    string? ExtraComment,
+    bool? HasInvitedToSurvey
 );
 
 public static class CreateSurveyAnswerMapping

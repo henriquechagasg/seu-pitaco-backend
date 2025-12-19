@@ -4,6 +4,7 @@ public enum QuestionType
 {
     CSAT,
     NPS,
+    Attendant,
     SingleChoice,
     OpenText,
 }

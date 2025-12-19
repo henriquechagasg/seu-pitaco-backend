@@ -9,7 +9,8 @@ public record CreateSurveyAnswerInput(
     QuestionType Type,
     int? NumericValue,
     string? TextValue,
-    string? ExtraComment
+    string? ExtraComment,
+    bool? HasInvitedToSurvey
 );
 
 public class SurveyAnswer
@@ -21,6 +22,7 @@ public class SurveyAnswer
     public int? NumericValue { get; set; }
     public string? TextValue { get; set; }
     public string? ExtraComment { get; set; }
+    public bool? HasInvitedToSurvey { get; set; }
     public SurveyQuestion Question { get; set; } = null!;
     public SurveySubmission Submission { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
@@ -65,6 +67,7 @@ public class SurveyAnswer
 
                 break;
 
+            case QuestionType.Attendant:
             case QuestionType.SingleChoice:
                 if (string.IsNullOrEmpty(input.TextValue))
                     return SurveyAnswerErrors.MissingTextValue(input.Type);
@@ -85,6 +88,7 @@ public class SurveyAnswer
             NumericValue = input.NumericValue,
             TextValue = input.TextValue,
             ExtraComment = input.ExtraComment,
+            HasInvitedToSurvey = input.HasInvitedToSurvey,
         };
     }
 }

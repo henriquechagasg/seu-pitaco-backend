@@ -65,7 +65,8 @@ public class CreateSurveySubmissionCommandHandler(AppDbContext _context)
                 dto.Type,
                 dto.NumericValue,
                 dto.TextValue,
-                dto.ExtraComment
+                dto.ExtraComment,
+                dto.HasInvitedToSurvey
             )
         );
     }
