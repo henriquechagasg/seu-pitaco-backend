@@ -7,7 +7,7 @@ using WebApi.Surveys.Application.Dtos;
 
 namespace WebApi.Surveys.Application.Endpoints;
 
-public static class CompaniesEndpoints
+public static class SurveysEndpoints
 {
     public static void MapSurveysEndpoints(this IEndpointRouteBuilder app)
     {
